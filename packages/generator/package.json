@@ -1,19 +1,21 @@
 {
   "name": "nestjs-prisma-graphql-crud-gen",
-  "description": "Provide a description about your generator",
-  "version": "1.0.0",
-  "main": "dist/generator.js",
+  "description": "Generate CRUD resolvers from GraphQL schema with NestJS and Prisma",
+  "version": "0.8.0",
+  "main": "dist-cjs/index.js",
+  "types": "dist-cjs/index.d.ts",
   "license": "MIT",
   "bin": {
-    "nestjs-prisma-graphql-crud-gen": "dist/bin.js"
+    "nestjs-prisma-graphql-crud-gen": "./dist-cjs/index.js"
   },
   "engines": {
     "node": ">=14.0"
   },
   "scripts": {
-    "start": "node dist/bin.js",
+    "start": "node dist-cjs/bin.js",
     "dev": "npx tsc -w",
-    "build": "npx tsc",
+    "clean": "rm -rf dist-cjs dist-esm node_modules/.cache",
+    "build": "yarn clean && npx tsc --build tsconfig.cjs.json tsconfig.esm.json",
     "prepack": "yarn build",
     "test": "jest"
   },
@@ -35,17 +37,41 @@
     "@semantic-release/git": "^10.0.1",
     "semantic-release": "^18.0.1"
   },
-  "homepage": "Link to homepage or github readme here",
+  "homepage": "https://github.com/mk668a/nestjs-prisma-graphql-crud-gen",
+  "files": [
+    "dist-cjs",
+    "dist-esm"
+  ],
   "repository": {
     "type": "git",
-    "url": "Repo link here"
+    "url": "git+https://github.com/mk668a/nestjs-prisma-graphql-crud-gen.git"
   },
-  "author": "Your Name <Your Email>",
+  "author": "mk668a <msftoaa@gmail.com>",
   "keywords": [
     "prisma",
     "prisma2",
+    "graphql",
     "generator"
   ],
+  "exports": {
+    ".": {
+      "require": "./dist-cjs/index.js",
+      "import": "./dist-esm/index.js"
+    },
+    "./*": {
+      "default": "./*.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "index.d.ts": [
+        "./dist-cjs/entrypoints/main.d.ts"
+      ],
+      "*": [
+        "./*"
+      ]
+    }
+  },
   "release": {
     "branches": [
       "main"
