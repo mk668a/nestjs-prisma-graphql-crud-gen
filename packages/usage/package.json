@@ -4,14 +4,19 @@
   "version": "1.0.0",
   "main": "src/app.js",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "generate": "prisma generate"
+  },
   "dependencies": {
-    "@prisma/client": "3.7.0"
+    "@nestjs/graphql": "^10.0.18",
+    "@prisma/client": "^4.0.0",
+    "graphql": "^16.5.0",
+    "graphql-scalars": "^1.17.0"
   },
   "devDependencies": {
     "@types/node": "16.11.7",
-    "prisma": "3.7.0",
-    "nestjs-prisma-graphql-crud-gen": "1.0.0",
+    "nestjs-prisma-graphql-crud-gen": "^0.8.0",
+    "prisma": "^4.0.0",
     "typescript": "4.5.2"
   }
 }
