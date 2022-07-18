@@ -1,6 +1,11 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
 generator custom_generator {
   provider = "node ../../node_modules/nestjs-prisma-graphql-crud-gen"
-  output   = "../types"
+  output   = "../generated"
 }
 
 datasource db {
@@ -8,10 +13,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
+model Users {
+  id    String  @id @default(cuid())
   email String  @unique
   name  String?
+  posts Post[]
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean
+  title     String
+  content   String?
+  author    Users?    @relation(fields: [authorId], references: [id])
+  authorId  String?
 }
 
 enum NotificationType {
