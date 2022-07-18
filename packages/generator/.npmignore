@@ -6,4 +6,5 @@ jest.config.js
 yarn.lock
 yarn-error.log
 .pnpm-debug.log
-dist
+dist-cjs
+dist-esm
