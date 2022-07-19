@@ -4,7 +4,10 @@ import path from 'path'
 import { ModuleKind, Project, ScriptTarget } from 'ts-morph'
 import { DmmfDocument } from './generator/dmmf/DmmfDocument'
 import { generateCommonEnums } from './generator/generateCommonEnums'
+import { generateCommonInput } from './generator/generateCommonInput'
 import { generateEnums } from './generator/generateEnum'
+import { generateInput } from './generator/generateInput'
+// import { generateInput } from './generator/generateInput'
 import { generateModel } from './generator/generateModel'
 import { toUnixPath } from './generator/helpers'
 import { ALL_EMIT_BLOCK_KINDS, getBlocksToEmit } from './generator/options'
@@ -57,14 +60,16 @@ export async function generate(options: GeneratorOptions) {
   generateCommonEnums(dmmfDocument, project, outputDir)
   // generate enums
   generateEnums(dmmfDocument, project, outputDir)
-
   // generate common input
+  generateCommonInput(dmmfDocument, project, outputDir)
 
   dmmfDocument.datamodel.models.forEach((model) => {
     // generate models
     generateModel(dmmfDocument, project, outputDir, model)
     // generate args
     // generate input
+    generateInput(dmmfDocument, project, outputDir, model)
+
     // generate output
     // generate resolver
     // generate service

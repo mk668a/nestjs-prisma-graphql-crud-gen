@@ -11,7 +11,7 @@ export const generateEnums = (dmmfDocument: DmmfDocument, project: Project, outp
     const sourceFile = project.createSourceFile(filePath, undefined, {
       overwrite: true,
     })
-    sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphql' })
+    sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
 
     sourceFile.addEnum({
       isExported: true,
@@ -23,7 +23,7 @@ export const generateEnums = (dmmfDocument: DmmfDocument, project: Project, outp
     })
 
     sourceFile.addStatements([
-      `NestJsGraphql.registerEnumType(${enumDef.typeName}, {
+      `NestJsGraphQL.registerEnumType(${enumDef.typeName}, {
         name: "${enumDef.typeName}",
         description: ${enumDef.docs ? `"${enumDef.docs}"` : 'undefined'},
       });`,

@@ -144,6 +144,8 @@ export namespace DMMF {
     }
     fields: SchemaArg[]
     typeName: string
+    modelName: string | undefined
+    modelType: Model | undefined
   }
   export interface ModelMapping {
     model: string

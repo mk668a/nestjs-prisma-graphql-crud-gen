@@ -9,7 +9,7 @@ export const generateCommonEnums = (dmmfDocument: DmmfDocument, project: Project
   const sourceFile = project.createSourceFile(filePath, undefined, {
     overwrite: true,
   })
-  sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphql' })
+  sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
 
   const datamodelEnumNames = dmmfDocument.datamodel.enums.map((enumDef) => enumDef.typeName)
   dmmfDocument.schema.enums
@@ -26,7 +26,7 @@ export const generateCommonEnums = (dmmfDocument: DmmfDocument, project: Project
       })
 
       sourceFile.addStatements([
-        `NestJsGraphql.registerEnumType(${enumDef.typeName}, {
+        `NestJsGraphQL.registerEnumType(${enumDef.typeName}, {
           name: "${enumDef.typeName}",
           description: ${enumDef.docs ? `"${enumDef.docs}"` : 'undefined'},
         });`,

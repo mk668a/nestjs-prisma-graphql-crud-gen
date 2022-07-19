@@ -10,6 +10,7 @@ import { supportedQueryActions, supportedMutationActions, InputOmitSetting } fro
 export function transformSchema(datamodel: PrismaDMMF.Schema, dmmfDocument: DmmfDocument): Omit<DMMF.Schema, 'enums'> {
   const inputObjectTypes = [...(datamodel.inputObjectTypes.prisma ?? []), ...(datamodel.inputObjectTypes.model ?? [])]
   const outputObjectTypes = [...(datamodel.outputObjectTypes.prisma ?? []), ...(datamodel.outputObjectTypes.model ?? [])]
+
   return {
     inputTypes: inputObjectTypes.filter(uncheckedScalarInputsFilter(dmmfDocument)).map(transformInputType(dmmfDocument)),
     outputTypes: outputObjectTypes.map(transformOutputType(dmmfDocument)),
@@ -83,6 +84,7 @@ function transformInputType(dmmfDocument: DmmfDocument) {
   return (inputType: PrismaDMMF.InputType): DMMF.InputType => {
     const modelName = getModelNameFromInputType(inputType.name)
     const modelType = modelName ? dmmfDocument.datamodel.models.find((it) => it.name === modelName) : undefined
+
     return {
       ...inputType,
       typeName: getInputTypeName(inputType.name, dmmfDocument),
@@ -112,6 +114,8 @@ function transformInputType(dmmfDocument: DmmfDocument) {
             isOmitted,
           }
         }),
+      modelName,
+      modelType,
     }
   }
 }

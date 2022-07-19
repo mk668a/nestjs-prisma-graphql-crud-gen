@@ -137,7 +137,11 @@ export function mapScalarToTypeGraphQLType(scalar: string, emitIdAsIDType: boole
 }
 
 export function camelCase(str: string) {
-  return str[0].toLowerCase() + str.slice(1)
+  return str
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase()
+    })
+    .replace(/\s+/g, '')
 }
 
 export function pascalCase(str: string): string {
@@ -228,4 +232,13 @@ export function convertNewLines(str: string) {
 
 export function toUnixPath(maybeWindowsPath: string) {
   return maybeWindowsPath.split('\\').join('/')
+}
+
+export function getArguments(typeGraphQLType: string | undefined, docs: string | undefined, nullable: boolean, isAbstract?: boolean) {
+  const args: string[] = []
+  if (typeGraphQLType) args.push(`() => ${typeGraphQLType}`)
+  if (docs) args.push(`{ description: "${docs}"} `)
+  if (nullable) args.push(`{ nullable: true }`)
+  if (isAbstract) args.push(`{ isAbstract: true }`)
+  return args
 }

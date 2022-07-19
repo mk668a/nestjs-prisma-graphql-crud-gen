@@ -1,48 +1,17 @@
 import path from 'path'
 import { GetAccessorDeclarationStructure, OptionalKind, Project, PropertyDeclarationStructure, SetAccessorDeclarationStructure, Writers } from 'ts-morph'
 import { DmmfDocument } from './dmmf/DmmfDocument'
-import { DMMF } from './dmmf/types'
 import { camelCase, getArguments } from './helpers'
 
-export const generateInput = (dmmfDocument: DmmfDocument, project: Project, outputDir: string, model: DMMF.Model) => {
-  const modelName = camelCase(model.name)
-  const filePath = path.resolve(outputDir, `${modelName}/${modelName}.input.ts`)
+export const generateCommonInput = (dmmfDocument: DmmfDocument, project: Project, outputDir: string) => {
+  const dirPath = path.resolve(outputDir, 'common')
+  const filePath = path.resolve(dirPath, 'inputs.ts')
   const sourceFile = project.createSourceFile(filePath, undefined, {
     overwrite: true,
   })
 
   // imports
   sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
-  // import commonInputs
-  const commonInputs: string[] = []
-  dmmfDocument.schema.inputTypes
-    .filter((inputType) => !inputType.modelType)
-    .forEach((inputType) => {
-      if (!commonInputs.includes(inputType.typeName)) {
-        commonInputs.push(inputType.typeName)
-      }
-    })
-  sourceFile.addImportDeclaration({
-    moduleSpecifier: `../common/inputs`,
-    namedImports: commonInputs,
-  })
-  // import inputs
-  const inputs: { [key: string]: string[] } = {}
-  dmmfDocument.schema.inputTypes
-    .filter((inputType) => inputType.modelType && inputType.modelName !== model.name)
-    .forEach((inputType) => {
-      const key = camelCase(inputType.modelName!)
-      if (!inputs[key]) inputs[key] = []
-      if (!inputs[key].includes(inputType.typeName)) {
-        inputs[key].push(inputType.typeName)
-      }
-    })
-  Object.entries(inputs).forEach(([key, val]) => {
-    sourceFile.addImportDeclaration({
-      moduleSpecifier: `../${key}/${key}.input`,
-      namedImports: inputs[key],
-    })
-  })
   // import enums
   const enums: string[] = []
   dmmfDocument.schema.inputTypes.forEach((inputType) => {
@@ -54,12 +23,12 @@ export const generateInput = (dmmfDocument: DmmfDocument, project: Project, outp
     )
   })
   sourceFile.addImportDeclaration({
-    moduleSpecifier: '../common/enums',
+    moduleSpecifier: './enums',
     namedImports: [...new Set(enums)],
   })
 
   dmmfDocument.schema.inputTypes
-    .filter((inputType) => inputType.modelType && inputType.modelName === model.name)
+    .filter((inputType) => !inputType.modelType)
     .forEach((inputType) => {
       const fieldsToEmit = inputType.fields.filter((field) => !field.isOmitted)
       const mappedFields = fieldsToEmit.filter((field) => field.hasMappedName)
