@@ -2,11 +2,11 @@ import path from 'path'
 import { GetAccessorDeclarationStructure, OptionalKind, Project, PropertyDeclarationStructure, WriterFunction, Writers } from 'ts-morph'
 import { DmmfDocument } from './dmmf/DmmfDocument'
 import { DMMF } from './dmmf/types'
-import { convertNewLines, mapScalarToTSType } from './helpers'
+import { convertNewLines } from './helpers'
 
-export const generateModel = (dmmfDocument: DmmfDocument, project: Project, output: string, model: DMMF.Model) => {
+export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outputDir: string, model: DMMF.Model) => {
   const modelName = model.name.toLowerCase()
-  const writeLocation = path.join(output, 'models', `${modelName}.model.ts`)
+  const writeLocation = path.join(outputDir, 'models', `${modelName}.model.ts`)
   const sourceFile = project.createSourceFile(writeLocation, undefined, {
     overwrite: true,
   })

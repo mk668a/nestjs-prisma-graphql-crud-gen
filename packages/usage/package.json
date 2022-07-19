@@ -5,7 +5,9 @@
   "main": "src/app.js",
   "license": "MIT",
   "scripts": {
-    "generate": "prisma generate"
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "format": "yarn lint && prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "generate": "prisma generate && prisma migrate dev --name init && yarn format"
   },
   "dependencies": {
     "@nestjs/graphql": "^10.0.18",

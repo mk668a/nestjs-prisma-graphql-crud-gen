@@ -16,7 +16,6 @@ Generate CRUD resolvers from GraphQL schema with NestJS and Prisma
 1. Install this package in your project using:
 
 ```shell
-yarn add graphql class-validator
 yarn add nestjs-prisma-graphql-crud-gen
 ```
 
@@ -25,7 +24,7 @@ yarn add nestjs-prisma-graphql-crud-gen
 ```
 generator custom_generator {
   provider = "nestjs-prisma-graphql-crud-gen"
-  # output = "./generated" This is default path.
+  output = "./generated"
 }
 ```
 
@@ -33,4 +32,23 @@ generator custom_generator {
 
 ```shell
 npx prisma generate
+```
+
+# Output Directory Structure
+
+```
+generated/
+├── common
+│   ├── enums.ts
+│   └── inputs.ts
+├── models
+│   └── users.models.ts
+└── users
+    ├── users.args.ts
+    ├── users.enum.ts
+    ├── users.input.ts
+    ├── users.module.ts
+    ├── users.output.ts
+    ├── users.resolver.ts
+    └── users.service.ts
 ```

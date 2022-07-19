@@ -14,10 +14,14 @@ datasource db {
 }
 
 model Users {
-  id    String  @id @default(cuid())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id          String  @id @default(cuid())
+  first_name  String  @db.VarChar(255)
+  last_name   String  @db.VarChar(255)
+  email       String  @unique
+  gender      String? @db.VarChar(255)
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  posts       Post[]
 }
 
 model Post {

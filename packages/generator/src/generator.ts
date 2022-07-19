@@ -3,30 +3,16 @@ import { getDMMF, parseEnvValue } from '@prisma/sdk'
 import path from 'path'
 import { ModuleKind, Project, ScriptTarget } from 'ts-morph'
 import { DmmfDocument } from './generator/dmmf/DmmfDocument'
-import { generateCustomScalars } from './generator/generateCustomScalars'
+import { generateCommonEnums } from './generator/generateCommonEnums'
+import { generateEnums } from './generator/generateEnum'
 import { generateModel } from './generator/generateModel'
 import { toUnixPath } from './generator/helpers'
 import { ALL_EMIT_BLOCK_KINDS, getBlocksToEmit } from './generator/options'
 import { parseStringArray, parseStringBoolean } from './helpers'
 
 export async function generate(options: GeneratorOptions) {
-  const output = options.generator.output?.value
-
-  if (!output) throw new Error('No output was specified for nestjs-prisma-graphql-crud-gen')
-
-  const project = new Project({
-    compilerOptions: {
-      target: ScriptTarget.ES2019,
-      module: ModuleKind.CommonJS,
-      emitDecoratorMetadata: true,
-      experimentalDecorators: true,
-      esModuleInterop: true,
-      declaration: true,
-      importHelpers: true,
-    },
-  })
-
   const outputDir = parseEnvValue(options.generator.output!)
+  if (!outputDir) throw new Error('No output was specified for nestjs-prisma-graphql-crud-gen')
   const generatorConfig = options.generator.config
   const prismaClientProvider = options.otherGenerators.find((it) => parseEnvValue(it.provider) === 'prisma-client-js')!
   const prismaClientPath = parseEnvValue(prismaClientProvider.output!)
@@ -50,24 +36,48 @@ export async function generate(options: GeneratorOptions) {
       contextPrismaKey: generatorConfig.contextPrismaKey ?? 'prisma',
     },
   )
-
-  // scalars
-  const scalarsSourceFile = project.createSourceFile(output + '/scalars.ts', undefined, { overwrite: true })
-  generateCustomScalars(scalarsSourceFile, dmmfDocument.options)
-  // models
-  dmmfDocument.datamodel.models.forEach((model) => {
-    console.log(model)
-
-    // generate models
-    generateModel(dmmfDocument, project, output, model)
-    // generate resolver & services
-    // generateCreate(project, output, model)
+  const emitTranspiledCode = parseStringBoolean(generatorConfig.emitTranspiledCode) ?? outputDir.includes('node_modules')
+  const project = new Project({
+    compilerOptions: {
+      target: ScriptTarget.ES2019,
+      module: ModuleKind.CommonJS,
+      emitDecoratorMetadata: true,
+      experimentalDecorators: true,
+      esModuleInterop: true,
+      declaration: true,
+      importHelpers: true,
+      ...(emitTranspiledCode && {
+        declaration: true,
+        importHelpers: true,
+      }),
+    },
   })
 
-  // generate module
+  // generate common enums
+  generateCommonEnums(dmmfDocument, project, outputDir)
+  // generate enums
+  generateEnums(dmmfDocument, project, outputDir)
+
+  // generate common input
+
+  dmmfDocument.datamodel.models.forEach((model) => {
+    // generate models
+    generateModel(dmmfDocument, project, outputDir, model)
+    // generate args
+    // generate input
+    // generate output
+    // generate resolver
+    // generate service
+  })
 
   try {
-    await project.save()
+    if (emitTranspiledCode) await project.emit()
+    else {
+      for (const file of project.getSourceFiles()) {
+        file.formatText({ indentSize: 2 })
+      }
+      await project.save()
+    }
   } catch (e) {
     console.error('Error: unable to write files for nestjs-prisma-graphql-crud-gen')
     throw e
