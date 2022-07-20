@@ -33,7 +33,7 @@
     "@types/jest": "27.0.3",
     "@types/node": "18.0.6",
     "@types/pluralize": "^0.0.29",
-    "@types/prettier": "2.4.2",
+    "@types/prettier": "2.6.3",
     "jest": "27.4.7",
     "prisma": "4.1.0",
     "semantic-release": "^18.0.1",
