@@ -1,6 +1,6 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
 
-@NestJsGraphQL.ObjectType(() => AggregatePost, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Post', { isAbstract: true })
 export class AggregatePost {
   @NestJsGraphQL.Field(() => PostCountAggregate, { nullable: true })
   _count!: PostCountAggregate | null;
@@ -12,7 +12,7 @@ export class AggregatePost {
   _max!: PostMaxAggregate | null;
 }
 
-@NestJsGraphQL.ObjectType(() => PostGroupBy, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Post', { isAbstract: true })
 export class PostGroupBy {
   @NestJsGraphQL.Field(() => String)
   id!: string;
@@ -45,7 +45,7 @@ export class PostGroupBy {
   _max!: PostMaxAggregate | null;
 }
 
-@NestJsGraphQL.ObjectType(() => PostCountAggregate, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Post', { isAbstract: true })
 export class PostCountAggregate {
   @NestJsGraphQL.Field(() => NestJsGraphQL.Int)
   id!: number;
@@ -72,7 +72,7 @@ export class PostCountAggregate {
   _all!: number;
 }
 
-@NestJsGraphQL.ObjectType(() => PostMinAggregate, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Post', { isAbstract: true })
 export class PostMinAggregate {
   @NestJsGraphQL.Field(() => String, { nullable: true })
   id!: string | null;
@@ -96,7 +96,7 @@ export class PostMinAggregate {
   authorId!: string | null;
 }
 
-@NestJsGraphQL.ObjectType(() => PostMaxAggregate, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Post', { isAbstract: true })
 export class PostMaxAggregate {
   @NestJsGraphQL.Field(() => String, { nullable: true })
   id!: string | null;

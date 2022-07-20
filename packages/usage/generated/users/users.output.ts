@@ -1,6 +1,6 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
 
-@NestJsGraphQL.ObjectType(() => AggregateUsers, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Users', { isAbstract: true })
 export class AggregateUsers {
   @NestJsGraphQL.Field(() => UsersCountAggregate, { nullable: true })
   _count!: UsersCountAggregate | null;
@@ -12,7 +12,7 @@ export class AggregateUsers {
   _max!: UsersMaxAggregate | null;
 }
 
-@NestJsGraphQL.ObjectType(() => UsersGroupBy, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Users', { isAbstract: true })
 export class UsersGroupBy {
   @NestJsGraphQL.Field(() => String)
   id!: string;
@@ -45,13 +45,13 @@ export class UsersGroupBy {
   _max!: UsersMaxAggregate | null;
 }
 
-@NestJsGraphQL.ObjectType(() => UsersCount, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Users', { isAbstract: true })
 export class UsersCount {
   @NestJsGraphQL.Field(() => NestJsGraphQL.Int)
   posts!: number;
 }
 
-@NestJsGraphQL.ObjectType(() => UsersCountAggregate, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Users', { isAbstract: true })
 export class UsersCountAggregate {
   @NestJsGraphQL.Field(() => NestJsGraphQL.Int)
   id!: number;
@@ -78,7 +78,7 @@ export class UsersCountAggregate {
   _all!: number;
 }
 
-@NestJsGraphQL.ObjectType(() => UsersMinAggregate, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Users', { isAbstract: true })
 export class UsersMinAggregate {
   @NestJsGraphQL.Field(() => String, { nullable: true })
   id!: string | null;
@@ -102,7 +102,7 @@ export class UsersMinAggregate {
   updated_at!: Date | null;
 }
 
-@NestJsGraphQL.ObjectType(() => UsersMaxAggregate, { isAbstract: true })
+@NestJsGraphQL.ObjectType('Users', { isAbstract: true })
 export class UsersMaxAggregate {
   @NestJsGraphQL.Field(() => String, { nullable: true })
   id!: string | null;

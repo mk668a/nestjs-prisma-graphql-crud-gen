@@ -42,7 +42,7 @@ export const generateInput = (dmmfDocument: DmmfDocument, project: Project, outp
   Object.entries(inputs).forEach(([key, val]) => {
     sourceFile.addImportDeclaration({
       moduleSpecifier: `../${key}/${key}.input`,
-      namedImports: inputs[key],
+      namedImports: val,
     })
   })
   // import enums

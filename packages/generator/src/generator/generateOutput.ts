@@ -57,7 +57,7 @@ export const generateOutput = (dmmfDocument: DmmfDocument, project: Project, out
       decorators: [
         {
           name: 'NestJsGraphQL.ObjectType',
-          arguments: getArguments(type.typeName, undefined, undefined, true, dmmfDocument.options.simpleResolvers),
+          arguments: [`'${model.typeName}'`, ...getArguments(undefined, undefined, undefined, true, dmmfDocument.options.simpleResolvers)],
         },
       ],
       properties: type.fields.map<OptionalKind<PropertyDeclarationStructure>>((field) => ({

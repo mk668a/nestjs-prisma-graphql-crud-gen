@@ -3,6 +3,7 @@ import { getDMMF, parseEnvValue } from '@prisma/sdk'
 import path from 'path'
 import { ModuleKind, Project, ScriptTarget } from 'ts-morph'
 import { DmmfDocument } from './generator/dmmf/DmmfDocument'
+import { generateArgs } from './generator/generateArgs'
 import { generateCommonEnums } from './generator/generateCommonEnums'
 import { generateCommonInput } from './generator/generateCommonInput'
 import { generateCommonOutput } from './generator/generateCommonOutput'
@@ -18,6 +19,8 @@ import { parseStringArray, parseStringBoolean } from './helpers'
 export async function generate(options: GeneratorOptions) {
   const outputDir = parseEnvValue(options.generator.output!)
   if (!outputDir) throw new Error('No output was specified for nestjs-prisma-graphql-crud-gen')
+
+  // prepare dmmfDocument
   const generatorConfig = options.generator.config
   const prismaClientProvider = options.otherGenerators.find((it) => parseEnvValue(it.provider) === 'prisma-client-js')!
   const prismaClientPath = parseEnvValue(prismaClientProvider.output!)
@@ -42,6 +45,7 @@ export async function generate(options: GeneratorOptions) {
     },
   )
   const emitTranspiledCode = parseStringBoolean(generatorConfig.emitTranspiledCode) ?? outputDir.includes('node_modules')
+  // new project
   const project = new Project({
     compilerOptions: {
       target: ScriptTarget.ES2019,
@@ -58,6 +62,9 @@ export async function generate(options: GeneratorOptions) {
     },
   })
 
+  /**
+   * call generaters
+   */
   // generate common enums
   generateCommonEnums(dmmfDocument, project, outputDir)
   // generate enums
@@ -70,13 +77,14 @@ export async function generate(options: GeneratorOptions) {
   dmmfDocument.datamodel.models.forEach((model) => {
     // generate models
     generateModel(dmmfDocument, project, outputDir, model)
-    // generate args
     // generate input
     generateInput(dmmfDocument, project, outputDir, model)
     // generate output
     generateOutput(dmmfDocument, project, outputDir, model)
-
+    // generate args
+    generateArgs(dmmfDocument, project, outputDir, model)
     // generate resolver
+
     // generate service
   })
 

@@ -48,7 +48,7 @@ export const generateCommonOutput = (dmmfDocument: DmmfDocument, project: Projec
       decorators: [
         {
           name: 'NestJsGraphQL.ObjectType',
-          arguments: getArguments(type.typeName, undefined, undefined, true, dmmfDocument.options.simpleResolvers),
+          arguments: [`'${type.typeName}'`, ...getArguments(undefined, undefined, undefined, true, dmmfDocument.options.simpleResolvers)],
         },
       ],
       properties: type.fields.map<OptionalKind<PropertyDeclarationStructure>>((field) => ({
