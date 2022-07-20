@@ -14,8 +14,6 @@ enum PrismaScalars {
   Bytes = 'Bytes',
 }
 
-export function noop() {}
-
 export function getFieldTSType(
   dmmfDocument: DmmfDocument,
   typeInfo: DMMF.TypeInfo,

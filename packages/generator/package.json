@@ -23,21 +23,22 @@
     "@prisma/client": "3.12.0",
     "@prisma/generator-helper": "4.0.0",
     "@prisma/sdk": "3.12.0",
-    "prettier": "2.7.1",
     "pluralize": "^8.0.0",
+    "prettier": "2.7.1",
     "ts-morph": "^15.1.0"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^6.0.1",
+    "@semantic-release/git": "^10.0.1",
     "@types/jest": "27.0.3",
     "@types/node": "18.0.6",
+    "@types/pluralize": "^0.0.29",
     "@types/prettier": "2.4.2",
     "jest": "27.4.7",
     "prisma": "4.0.0",
+    "semantic-release": "^18.0.1",
     "ts-jest": "27.1.4",
-    "typescript": "4.7.4",
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "semantic-release": "^18.0.1"
+    "typescript": "4.7.4"
   },
   "homepage": "https://github.com/mk668a/nestjs-prisma-graphql-crud-gen",
   "files": [
