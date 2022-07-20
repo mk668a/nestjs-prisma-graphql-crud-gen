@@ -234,11 +234,18 @@ export function toUnixPath(maybeWindowsPath: string) {
   return maybeWindowsPath.split('\\').join('/')
 }
 
-export function getArguments(typeGraphQLType: string | undefined, docs: string | undefined, nullable: boolean, isAbstract?: boolean) {
+export function getArguments(
+  typeGraphQLType: string | undefined,
+  docs: string | undefined,
+  nullable: boolean,
+  isAbstract?: boolean,
+  simpleResolvers?: boolean | undefined,
+) {
   const args: string[] = []
   if (typeGraphQLType) args.push(`() => ${typeGraphQLType}`)
   if (docs) args.push(`{ description: "${docs}"} `)
   if (nullable) args.push(`{ nullable: true }`)
   if (isAbstract) args.push(`{ isAbstract: true }`)
+  if (simpleResolvers) args.push(`{ simpleResolvers: true }`)
   return args
 }

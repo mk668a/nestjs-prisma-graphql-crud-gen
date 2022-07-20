@@ -10,12 +10,10 @@ export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outp
   const sourceFile = project.createSourceFile(writeLocation, undefined, {
     overwrite: true,
   })
+  const modelOutputType = dmmfDocument.schema.outputTypes.find((type) => type.name === model.name)!
 
   // imports
-  sourceFile.addImportDeclaration({
-    moduleSpecifier: '@nestjs/graphql',
-    namespaceImport: 'NestJsGraphQL',
-  })
+  sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
   // import enums
   const enums = model.fields.filter((field) => field.location === 'enumTypes').map((field) => field.type)
   for (const item of [...new Set(enums)].sort()) {
@@ -35,6 +33,17 @@ export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outp
       namedImports: [item],
     })
   }
+  // import countField
+  const countField = modelOutputType.fields.find((it) => it.name === '_count')
+  const shouldEmitCountField = countField !== undefined && dmmfDocument.shouldGenerateBlock('crudResolvers')
+  if (shouldEmitCountField) {
+    for (const elementName of [...new Set([countField.typeGraphQLType])].sort()) {
+      sourceFile.addImportDeclaration({
+        moduleSpecifier: path.posix.join('..', modelName, `${modelName}.output`),
+        namedImports: [elementName],
+      })
+    }
+  }
 
   // class
   sourceFile.addClass({
@@ -43,16 +52,7 @@ export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outp
     decorators: [
       {
         name: 'NestJsGraphQL.ObjectType',
-        arguments: [
-          `"${model.typeName}"`,
-          Writers.object({
-            isAbstract: 'true',
-            ...(model.docs && { description: `"${model.docs}"` }),
-            ...(dmmfDocument.options.simpleResolvers && {
-              simpleResolvers: 'true',
-            }),
-          }),
-        ],
+        arguments: [`'${model.typeName}'`, ...getArguments(undefined, model.docs, false, true, dmmfDocument.options.simpleResolvers)],
       },
     ],
     properties: [
@@ -68,18 +68,25 @@ export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outp
           decorators: [
             ...(field.relationName || field.typeFieldAlias || field.isOmitted.output
               ? []
-              : [
-                  {
-                    name: 'NestJsGraphQL.Field',
-                    arguments: getArguments(field.typeGraphQLType, field.docs, isOptional),
-                  },
-                ]),
+              : [{ name: 'NestJsGraphQL.Field', arguments: getArguments(field.typeGraphQLType, field.docs, isOptional) }]),
           ],
           ...(field.docs && {
             docs: [{ description: `\n${convertNewLines(field.docs)}` }],
           }),
         }
       }),
+      ...(shouldEmitCountField
+        ? [
+            {
+              name: countField.name,
+              type: countField.fieldTSType,
+              hasExclamationToken: countField.isRequired,
+              hasQuestionToken: !countField.isRequired,
+              trailingTrivia: '\r\n',
+              decorators: [{ name: 'NestJsGraphQL.Field', arguments: getArguments(countField.typeGraphQLType, undefined, true) }],
+            },
+          ]
+        : []),
     ],
     getAccessors: model.fields
       .filter((field) => field.typeFieldAlias && !field.relationName && !field.isOmitted.output)

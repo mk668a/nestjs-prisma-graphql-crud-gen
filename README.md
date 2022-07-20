@@ -24,7 +24,7 @@ yarn add nestjs-prisma-graphql-crud-gen
 ```
 generator custom_generator {
   provider = "nestjs-prisma-graphql-crud-gen"
-  output = "./generated"
+  output = "../generated"
 }
 ```
 
@@ -52,3 +52,10 @@ generated/
     ├── users.resolver.ts
     └── users.service.ts
 ```
+
+sample result
+<a href="https://github.com/mk668a/nestjs-prisma-graphql-crud-gen/tree/main/packages/usage/generated">/packages/usage/generated</a>
+
+# Sample Project
+
+<a href="https://github.com/mk668a/nestjs-graphql-starter">@mk668a/nestjs-graphql-starter</a>

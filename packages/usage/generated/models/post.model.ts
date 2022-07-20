@@ -1,9 +1,7 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
 import { Users } from "../models/users.model";
 
-@NestJsGraphQL.ObjectType("Post", {
-  isAbstract: true
-})
+@NestJsGraphQL.ObjectType('Post', { isAbstract: true })
 export class Post {
   @NestJsGraphQL.Field(() => String)
   id!: string;

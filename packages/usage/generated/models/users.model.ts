@@ -1,9 +1,8 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
 import { Post } from "../models/post.model";
+import { UsersCount } from "../users/users.output";
 
-@NestJsGraphQL.ObjectType("Users", {
-  isAbstract: true
-})
+@NestJsGraphQL.ObjectType('Users', { isAbstract: true })
 export class Users {
   @NestJsGraphQL.Field(() => String)
   id!: string;
@@ -27,4 +26,7 @@ export class Users {
   updated_at!: Date;
 
   posts?: Post[];
+
+  @NestJsGraphQL.Field(() => UsersCount, { nullable: true })
+  _count?: UsersCount | null;
 }
