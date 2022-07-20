@@ -9,9 +9,10 @@ import { generateCommonInput } from './generator/generateCommonInput'
 import { generateCommonOutput } from './generator/generateCommonOutput'
 import { generateEnums } from './generator/generateEnum'
 import { generateInput } from './generator/generateInput'
-// import { generateInput } from './generator/generateInput'
 import { generateModel } from './generator/generateModel'
 import { generateOutput } from './generator/generateOutput'
+import { generateResolver } from './generator/generateResolver'
+import { generateService } from './generator/generateService'
 import { toUnixPath } from './generator/helpers'
 import { ALL_EMIT_BLOCK_KINDS, getBlocksToEmit } from './generator/options'
 import { parseStringArray, parseStringBoolean } from './helpers'
@@ -84,8 +85,9 @@ export async function generate(options: GeneratorOptions) {
     // generate args
     generateArgs(dmmfDocument, project, outputDir, model)
     // generate resolver
-
+    generateResolver(project, outputDir, model)
     // generate service
+    generateService(project, outputDir, model)
   })
 
   try {

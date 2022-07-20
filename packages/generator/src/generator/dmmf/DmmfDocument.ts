@@ -58,10 +58,6 @@ export class DmmfDocument implements DMMF.Document {
     return this.models.some((it) => it.name === typeName)
   }
 
-  isModelTypeName(typeName: string): boolean {
-    return this.models.some((it) => it.typeName === typeName)
-  }
-
   getModelFieldAlias(modelName: string, fieldName: string): string | undefined {
     const model = this.models.find((it) => it.name === modelName)
     return model?.fields.find((it) => it.name === fieldName)?.typeFieldAlias

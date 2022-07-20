@@ -2,8 +2,9 @@
 
 import { generatorHandler } from '@prisma/generator-helper'
 import { logger } from '@prisma/sdk'
-import { GENERATOR_NAME } from './constants'
 import { generate } from './generator'
+
+const GENERATOR_NAME = 'nestjs-prisma-graphql-crud-gen'
 
 generatorHandler({
   onManifest() {

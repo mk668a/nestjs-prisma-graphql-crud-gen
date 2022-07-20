@@ -1,8 +1,8 @@
 import path from 'path'
-import { OptionalKind, Project, PropertyDeclarationStructure, Writers } from 'ts-morph'
+import { OptionalKind, Project, PropertyDeclarationStructure } from 'ts-morph'
 import { DmmfDocument } from './dmmf/DmmfDocument'
 import { DMMF } from './dmmf/types'
-import { camelCase, getArguments, getInputTypeName } from './helpers'
+import { camelCase, getArguments } from './helpers'
 
 export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outputDir: string, model: DMMF.Model) => {
   const modelName = camelCase(model.name)
@@ -15,12 +15,11 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
   sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
   const inputs: { [key: string]: string[] } = {}
   const commonEnums: string[] = []
-  dmmfDocument.relationModels.forEach(async (relationModelData) => {
-    relationModelData.relationFields
-      .filter((field) => field.argsTypeName)
-      .forEach(async (field) => {
-        console.log(modelName, 'relationFields.typeGraphQLType:', field.outputTypeField.args)
-        const fields = field.outputTypeField.args
+  dmmfDocument.modelMappings.forEach(async (mapping) => {
+    const actionsWithArgs = mapping.actions.filter((it) => it.argsTypeName !== undefined)
+    if (actionsWithArgs.length) {
+      actionsWithArgs.forEach(async (action) => {
+        const fields = action.method.args
         // import inputs
         for (const item of [
           ...new Set(
@@ -62,6 +61,7 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
           if (!commonEnums.includes(item)) commonEnums.push(item)
         }
       })
+    }
   })
   Object.entries(inputs).forEach(([key, val]) => {
     if (inputs[key].length) {
@@ -78,39 +78,40 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
     })
   }
 
-  dmmfDocument.relationModels
-    .filter((field) => field.model.name === model.name)
-    .forEach(async (relationModelData) => {
-      relationModelData.relationFields
-        .filter((field) => field.argsTypeName)
-        .forEach(async (field) => {
-          const fields = field.outputTypeField.args
+  // class
+  dmmfDocument.modelMappings.forEach(async (mapping) => {
+    const actionsWithArgs = mapping.actions.filter((it) => it.argsTypeName !== undefined)
 
-          sourceFile.addClass({
-            name: field.argsTypeName,
-            isExported: true,
-            decorators: [
-              {
-                name: 'NestJsGraphQL.ArgsType',
-                arguments: [],
-              },
-            ],
-            properties: fields.map<OptionalKind<PropertyDeclarationStructure>>((arg) => {
-              return {
-                name: arg.typeName,
-                type: arg.fieldTSType,
-                hasExclamationToken: arg.isRequired,
-                hasQuestionToken: !arg.isRequired,
-                trailingTrivia: '\r\n',
-                decorators: [
-                  {
-                    name: 'NestJsGraphQL.Field',
-                    arguments: getArguments(arg.typeGraphQLType, undefined, !arg.isRequired),
-                  },
-                ],
-              }
-            }),
-          })
+    if (actionsWithArgs.length) {
+      actionsWithArgs.forEach(async (action) => {
+        const fields = action.method.args
+
+        sourceFile.addClass({
+          name: action.argsTypeName,
+          isExported: true,
+          decorators: [
+            {
+              name: 'NestJsGraphQL.ArgsType',
+              arguments: [],
+            },
+          ],
+          properties: fields.map<OptionalKind<PropertyDeclarationStructure>>((arg) => {
+            return {
+              name: arg.typeName,
+              type: arg.fieldTSType,
+              hasExclamationToken: arg.isRequired,
+              hasQuestionToken: !arg.isRequired,
+              trailingTrivia: '\r\n',
+              decorators: [
+                {
+                  name: 'NestJsGraphQL.Field',
+                  arguments: getArguments(arg.typeGraphQLType, undefined, !arg.isRequired),
+                },
+              ],
+            }
+          }),
         })
-    })
+      })
+    }
+  })
 }
