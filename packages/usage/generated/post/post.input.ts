@@ -1,6 +1,6 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
 import { StringFilter, StringNullableFilter, DateTimeFilter, StringWithAggregatesFilter, StringNullableWithAggregatesFilter, DateTimeWithAggregatesFilter, BoolFilter, BoolWithAggregatesFilter, StringFieldUpdateOperationsInput, NullableStringFieldUpdateOperationsInput, DateTimeFieldUpdateOperationsInput, BoolFieldUpdateOperationsInput, NestedStringFilter, NestedStringNullableFilter, NestedDateTimeFilter, NestedStringWithAggregatesFilter, NestedIntFilter, NestedStringNullableWithAggregatesFilter, NestedIntNullableFilter, NestedDateTimeWithAggregatesFilter, NestedBoolFilter, NestedBoolWithAggregatesFilter } from "../common/inputs";
-import { UsersWhereInput, UsersOrderByWithRelationInput, UsersWhereUniqueInput, UsersOrderByWithAggregationInput, UsersScalarWhereWithAggregatesInput, UsersCreateInput, UsersUpdateInput, UsersCreateManyInput, UsersUpdateManyMutationInput, UsersCountOrderByAggregateInput, UsersMaxOrderByAggregateInput, UsersMinOrderByAggregateInput, UsersRelationFilter, UsersCreateNestedOneWithoutPostsInput, UsersUpdateOneWithoutPostsInput, UsersCreateWithoutPostsInput, UsersCreateOrConnectWithoutPostsInput, UsersUpsertWithoutPostsInput, UsersUpdateWithoutPostsInput } from "../users/users.input";
+import { UsersWhereInput, UsersOrderByWithRelationInput, UsersWhereUniqueInput, UsersOrderByWithAggregationInput, UsersScalarWhereWithAggregatesInput, UsersCreateInput, UsersUpdateInput, UsersCreateManyInput, UsersUpdateManyMutationInput, UsersCountOrderByAggregateInput, UsersMaxOrderByAggregateInput, UsersMinOrderByAggregateInput, UsersRelationFilter, UsersCreateNestedOneWithoutPostsInput, UsersUpdateOneWithoutPostsNestedInput, UsersCreateWithoutPostsInput, UsersCreateOrConnectWithoutPostsInput, UsersUpsertWithoutPostsInput, UsersUpdateWithoutPostsInput } from "../users/users.input";
 import { SortOrder, QueryMode } from "../common/enums";
 
 @NestJsGraphQL.InputType('PostWhereInput', { isAbstract: true })
@@ -182,8 +182,8 @@ export class PostUpdateInput {
   @NestJsGraphQL.Field(() => NullableStringFieldUpdateOperationsInput, { nullable: true })
   content?: NullableStringFieldUpdateOperationsInput | undefined;
 
-  @NestJsGraphQL.Field(() => UsersUpdateOneWithoutPostsInput, { nullable: true })
-  author?: UsersUpdateOneWithoutPostsInput | undefined;
+  @NestJsGraphQL.Field(() => UsersUpdateOneWithoutPostsNestedInput, { nullable: true })
+  author?: UsersUpdateOneWithoutPostsNestedInput | undefined;
 }
 
 @NestJsGraphQL.InputType('PostCreateManyInput', { isAbstract: true })
@@ -336,8 +336,8 @@ export class PostCreateNestedManyWithoutAuthorInput {
   connect?: PostWhereUniqueInput[] | undefined;
 }
 
-@NestJsGraphQL.InputType('PostUpdateManyWithoutAuthorInput', { isAbstract: true })
-export class PostUpdateManyWithoutAuthorInput {
+@NestJsGraphQL.InputType('PostUpdateManyWithoutAuthorNestedInput', { isAbstract: true })
+export class PostUpdateManyWithoutAuthorNestedInput {
   @NestJsGraphQL.Field(() => [PostCreateWithoutAuthorInput], { nullable: true })
   create?: PostCreateWithoutAuthorInput[] | undefined;
 

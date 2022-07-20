@@ -10,6 +10,7 @@ import { generateCommonOutput } from './generator/generateCommonOutput'
 import { generateEnums } from './generator/generateEnum'
 import { generateInput } from './generator/generateInput'
 import { generateModel } from './generator/generateModel'
+import { generateModule } from './generator/generateModule'
 import { generateOutput } from './generator/generateOutput'
 import { generateResolver } from './generator/generateResolver'
 import { generateService } from './generator/generateService'
@@ -88,6 +89,8 @@ export async function generate(options: GeneratorOptions) {
     generateResolver(project, outputDir, model)
     // generate service
     generateService(project, outputDir, model)
+    // generate module
+    generateModule(project, outputDir, model)
   })
 
   try {
