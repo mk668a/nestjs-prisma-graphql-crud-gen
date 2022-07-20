@@ -52,7 +52,7 @@ export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outp
     decorators: [
       {
         name: 'NestJsGraphQL.ObjectType',
-        arguments: [`'${model.typeName}'`, ...getArguments(undefined, model.docs, false, true, dmmfDocument.options.simpleResolvers)],
+        arguments: [`'${model.typeName}'`, ...getArguments(undefined, model.docs, undefined, true, dmmfDocument.options.simpleResolvers)],
       },
     ],
     properties: [

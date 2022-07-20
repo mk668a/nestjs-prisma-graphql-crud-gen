@@ -202,6 +202,42 @@ export function getInputTypeName(originalInputName: string, dmmfDocument: DmmfDo
   return `${modelTypeName}${typeNameRest}`
 }
 
+function getOutputKeywordPhrasePosition(outputTypeName: string) {
+  let outputType = ''
+  const outputKeywordList = [
+    'Query',
+    'Mutation',
+    'GroupByOutputType',
+    'AffectedRowsOutput',
+    'CountOutputType',
+    'CountAggregateOutputType',
+    'MinAggregateOutputType',
+    'MaxAggregateOutputType',
+    'Aggregate',
+  ]
+  for (const outputKeyword of outputKeywordList) {
+    if (outputTypeName.includes(outputKeyword)) {
+      outputType = outputTypeName.replace(outputKeyword, '')
+      break
+    }
+  }
+
+  if (outputType.length === 0) {
+    return
+  }
+
+  return outputType
+}
+
+export function getModelNameFromOutputType(outputTypeName: string) {
+  const keywordPhrase = getOutputKeywordPhrasePosition(outputTypeName)
+  if (!keywordPhrase) {
+    return
+  }
+
+  return keywordPhrase
+}
+
 export function cleanDocsString(documentation: string | undefined): string | undefined {
   if (!documentation) {
     return
@@ -235,9 +271,9 @@ export function toUnixPath(maybeWindowsPath: string) {
 }
 
 export function getArguments(
-  typeGraphQLType: string | undefined,
-  docs: string | undefined,
-  nullable: boolean,
+  typeGraphQLType?: string | undefined,
+  docs?: string | undefined,
+  nullable?: boolean,
   isAbstract?: boolean,
   simpleResolvers?: boolean | undefined,
 ) {

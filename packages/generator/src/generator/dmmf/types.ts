@@ -111,6 +111,7 @@ export namespace DMMF {
     name: string
     fields: OutputSchemaField[]
     typeName: string
+    modelName: string | undefined
   }
   export interface SchemaField {
     name: string

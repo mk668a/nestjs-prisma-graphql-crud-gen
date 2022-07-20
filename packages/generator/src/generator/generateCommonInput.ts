@@ -22,10 +22,12 @@ export const generateCommonInput = (dmmfDocument: DmmfDocument, project: Project
         .map((fieldType) => fieldType.type as string),
     )
   })
-  sourceFile.addImportDeclaration({
-    moduleSpecifier: './enums',
-    namedImports: [...new Set(enums)],
-  })
+  if (enums.length) {
+    sourceFile.addImportDeclaration({
+      moduleSpecifier: './enums',
+      namedImports: [...new Set(enums)],
+    })
+  }
 
   dmmfDocument.schema.inputTypes
     .filter((inputType) => !inputType.modelType)
@@ -39,7 +41,7 @@ export const generateCommonInput = (dmmfDocument: DmmfDocument, project: Project
         decorators: [
           {
             name: 'NestJsGraphQL.InputType',
-            arguments: [`'${inputType.typeName}'`, ...getArguments(undefined, undefined, false, true)],
+            arguments: [`'${inputType.typeName}'`, ...getArguments(undefined, undefined, undefined, true)],
           },
         ],
         properties: fieldsToEmit.map<OptionalKind<PropertyDeclarationStructure>>((field) => {

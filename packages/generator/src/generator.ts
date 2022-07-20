@@ -5,10 +5,12 @@ import { ModuleKind, Project, ScriptTarget } from 'ts-morph'
 import { DmmfDocument } from './generator/dmmf/DmmfDocument'
 import { generateCommonEnums } from './generator/generateCommonEnums'
 import { generateCommonInput } from './generator/generateCommonInput'
+import { generateCommonOutput } from './generator/generateCommonOutput'
 import { generateEnums } from './generator/generateEnum'
 import { generateInput } from './generator/generateInput'
 // import { generateInput } from './generator/generateInput'
 import { generateModel } from './generator/generateModel'
+import { generateOutput } from './generator/generateOutput'
 import { toUnixPath } from './generator/helpers'
 import { ALL_EMIT_BLOCK_KINDS, getBlocksToEmit } from './generator/options'
 import { parseStringArray, parseStringBoolean } from './helpers'
@@ -62,6 +64,8 @@ export async function generate(options: GeneratorOptions) {
   generateEnums(dmmfDocument, project, outputDir)
   // generate common input
   generateCommonInput(dmmfDocument, project, outputDir)
+  // generate common output
+  generateCommonOutput(dmmfDocument, project, outputDir)
 
   dmmfDocument.datamodel.models.forEach((model) => {
     // generate models
@@ -69,8 +73,9 @@ export async function generate(options: GeneratorOptions) {
     // generate args
     // generate input
     generateInput(dmmfDocument, project, outputDir, model)
-
     // generate output
+    generateOutput(dmmfDocument, project, outputDir, model)
+
     // generate resolver
     // generate service
   })

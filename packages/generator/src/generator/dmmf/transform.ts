@@ -1,7 +1,16 @@
 import { DMMF as PrismaDMMF } from '@prisma/client/runtime'
 import { DMMF } from './types'
 import { parseDocumentationAttributes } from './helpers'
-import { getInputTypeName, camelCase, getModelNameFromInputType, getTypeGraphQLType, getFieldTSType, pascalCase, cleanDocsString } from '../helpers'
+import {
+  getInputTypeName,
+  camelCase,
+  getModelNameFromInputType,
+  getTypeGraphQLType,
+  getFieldTSType,
+  pascalCase,
+  cleanDocsString,
+  getModelNameFromOutputType,
+} from '../helpers'
 import { DmmfDocument } from './DmmfDocument'
 import pluralize from 'pluralize'
 import { GeneratorOptions } from '../options'
@@ -122,7 +131,11 @@ function transformInputType(dmmfDocument: DmmfDocument) {
 
 function transformOutputType(dmmfDocument: DmmfDocument) {
   return (outputType: PrismaDMMF.OutputType): DMMF.OutputType => {
+    const modelName = dmmfDocument.datamodel.models.find((it) => it.name === getModelNameFromOutputType(outputType.name))
+      ? getModelNameFromOutputType(outputType.name)
+      : undefined
     const typeName = getMappedOutputTypeName(dmmfDocument, outputType.name)
+
     return {
       ...outputType,
       typeName,
@@ -163,6 +176,7 @@ function transformOutputType(dmmfDocument: DmmfDocument) {
             argsTypeName,
           }
         }),
+      modelName,
     }
   }
 }

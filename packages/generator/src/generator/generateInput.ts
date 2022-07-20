@@ -22,10 +22,12 @@ export const generateInput = (dmmfDocument: DmmfDocument, project: Project, outp
         commonInputs.push(inputType.typeName)
       }
     })
-  sourceFile.addImportDeclaration({
-    moduleSpecifier: `../common/inputs`,
-    namedImports: commonInputs,
-  })
+  if (commonInputs.length) {
+    sourceFile.addImportDeclaration({
+      moduleSpecifier: `../common/inputs`,
+      namedImports: commonInputs,
+    })
+  }
   // import inputs
   const inputs: { [key: string]: string[] } = {}
   dmmfDocument.schema.inputTypes
@@ -53,10 +55,12 @@ export const generateInput = (dmmfDocument: DmmfDocument, project: Project, outp
         .map((fieldType) => fieldType.type as string),
     )
   })
-  sourceFile.addImportDeclaration({
-    moduleSpecifier: '../common/enums',
-    namedImports: [...new Set(enums)],
-  })
+  if (enums.length) {
+    sourceFile.addImportDeclaration({
+      moduleSpecifier: '../common/enums',
+      namedImports: [...new Set(enums)],
+    })
+  }
 
   dmmfDocument.schema.inputTypes
     .filter((inputType) => inputType.modelType && inputType.modelName === model.name)
