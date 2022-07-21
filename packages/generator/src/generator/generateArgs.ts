@@ -13,7 +13,6 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
 
   // imports
   sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
-  const inputs: { [key: string]: string[] } = {}
   const commonEnums: string[] = []
   dmmfDocument.modelMappings.forEach(async (mapping) => {
     const actionsWithArgs = mapping.actions.filter((it) => it.argsTypeName !== undefined)
@@ -29,9 +28,10 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
               .map((argInputType) => argInputType.type),
           ),
         ].sort()) {
-          const key = camelCase(dmmfDocument.schema.inputTypes.find((type) => type.typeName === item)?.modelName || '')
-          if (!inputs[key]) inputs[key] = []
-          if (!inputs[key].includes(item)) inputs[key].push(item)
+          sourceFile.addImportDeclaration({
+            moduleSpecifier: `../${modelName}/inputs/${item}.input`,
+            namedImports: [item],
+          })
         }
         // import enums
         for (const item of [
@@ -63,14 +63,6 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
       })
     }
   })
-  Object.entries(inputs).forEach(([key, val]) => {
-    if (inputs[key].length) {
-      sourceFile.addImportDeclaration({
-        moduleSpecifier: `../${key}/${key}.input`,
-        namedImports: val,
-      })
-    }
-  })
   if (commonEnums.length) {
     sourceFile.addImportDeclaration({
       moduleSpecifier: `../common/enums`,
@@ -80,7 +72,7 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
 
   // class
   dmmfDocument.modelMappings.forEach(async (mapping) => {
-    const actionsWithArgs = mapping.actions.filter((it) => it.argsTypeName !== undefined)
+    const actionsWithArgs = mapping.actions.filter((it) => it.argsTypeName !== undefined && it.argsTypeName.includes(model.name))
 
     if (actionsWithArgs.length) {
       actionsWithArgs.forEach(async (action) => {

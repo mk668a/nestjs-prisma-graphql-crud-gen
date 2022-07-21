@@ -93,6 +93,11 @@ export async function generate(options: GeneratorOptions) {
     generateModule(project, outputDir, model)
   })
 
+  // delete unused
+  for (const sourceFile of project.getSourceFiles()) {
+    sourceFile.fixMissingImports().organizeImports().fixUnusedIdentifiers().formatText()
+  }
+
   try {
     if (emitTranspiledCode) await project.emit()
     else {

@@ -18,7 +18,7 @@ export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outp
   const enums = model.fields.filter((field) => field.location === 'enumTypes').map((field) => field.type)
   for (const item of [...new Set(enums)].sort()) {
     sourceFile.addImportDeclaration({
-      moduleSpecifier: path.posix.join('../enums', `${camelCase(item)}.enum`),
+      moduleSpecifier: path.posix.join('../enums', `${item}.enum`),
       namedImports: enums,
     })
   }
