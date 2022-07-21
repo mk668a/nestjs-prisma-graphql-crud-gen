@@ -53,7 +53,7 @@ generated/
     └── users.service.ts
 ```
 
-<a href="https://github.com/mk668a/nestjs-prisma-graphql-crud-gen/tree/main/packages/usage/generated">Sample results here</a>
+<a href="https://github.com/mk668a/nestjs-prisma-graphql-crud-gen/tree/main/usage/generated">Sample results here</a>
 
 # Sample Project
 
