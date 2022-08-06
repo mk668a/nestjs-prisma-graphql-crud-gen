@@ -2,7 +2,7 @@
     <img src="./icon.png" alt="icon" height="128" width="128">
 </div>
 
-# NestJS Prisma Graphql CRUD Generater
+# NestJS Prisma GraphQL CRUD Generater
 
 Generate CRUD resolvers from GraphQL schema with NestJS and Prisma
 

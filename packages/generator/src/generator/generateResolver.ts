@@ -11,8 +11,9 @@ export const generateResolver = (project: Project, outputDir: string, model: DMM
   sourceFile.addStatements(`import * as NestJsGraphql from '@nestjs/graphql'
     import { ${model.name}Service } from './${modelName}.service'
     import { ${model.name} } from '../models/${modelName}.model'
-    import { AffectedRowsOutput } from '../common/outputs'
-    import { Aggregate${model.name}, ${model.name}GroupBy } from './${modelName}.output'
+    import { AffectedRowsOutput } from '../common/outputs/AffectedRowsOutput.output'
+    import { Aggregate${model.name} } from './outputs/Aggregate${model.name}.output'
+    import { ${model.name}GroupBy } from './outputs/${model.name}GroupBy.output'
     import {
       Aggregate${model.name}Args,
       CreateMany${model.name}Args,

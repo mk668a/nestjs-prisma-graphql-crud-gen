@@ -1,5 +1,7 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
-import { DateTimeFieldUpdateOperationsInput, NullableStringFieldUpdateOperationsInput, StringFieldUpdateOperationsInput } from "../../common/inputs";
+import { DateTimeFieldUpdateOperationsInput } from "../../common/inputs/DateTimeFieldUpdateOperationsInput.input";
+import { NullableStringFieldUpdateOperationsInput } from "../../common/inputs/NullableStringFieldUpdateOperationsInput.input";
+import { StringFieldUpdateOperationsInput } from "../../common/inputs/StringFieldUpdateOperationsInput.input";
 
 @NestJsGraphQL.InputType('UsersUpdateWithoutPostsInput', { isAbstract: true })
 export class UsersUpdateWithoutPostsInput {

@@ -1,5 +1,5 @@
 import path from 'path'
-import { OptionalKind, Project, PropertyDeclarationStructure, Writers } from 'ts-morph'
+import { OptionalKind, Project, PropertyDeclarationStructure } from 'ts-morph'
 import { DmmfDocument } from './dmmf/DmmfDocument'
 import { DMMF } from './dmmf/types'
 import { camelCase, getArguments } from './helpers'
@@ -10,38 +10,38 @@ export const generateCommonOutput = (dmmfDocument: DmmfDocument, project: Projec
   const outputTypesToGenerate: DMMF.OutputType[] = dmmfDocument.schema.outputTypes.filter(
     (type) => !modelNames.includes(type.name) && !rootTypes.includes(type) && !type.modelName,
   )
-
-  // generate from types
-  const fileDirPath = path.resolve(outputDir, 'common')
-  const filePath = path.resolve(fileDirPath, `outputs.ts`)
-  const sourceFile = project.createSourceFile(filePath, undefined, {
-    overwrite: true,
-  })
-
-  // imports
-  sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
-  outputTypesToGenerate.forEach((type) => {
-    // import args
-    const fieldArgsTypeNames = type.fields.filter((it) => it.argsTypeName).map((it) => it.argsTypeName!)
-    for (const item of [...new Set(fieldArgsTypeNames)].sort()) {
-      sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('./args', `${camelCase(item)}.args`), namedImports: [item] })
-    }
-    // import outputs
-    const outputs = type.fields.filter((field) => field.outputType.location === 'outputObjectTypes').map((field) => field.outputType.type)
-    for (const item of [...new Set(outputs)].sort()) {
-      sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('../outputs', `${camelCase(item)}.args`), namedImports: [item] })
-    }
-    // import enums
-    const enums = type.fields
-      .map((field) => field.outputType)
-      .filter((fieldType) => fieldType.location === 'enumTypes')
-      .map((fieldType) => fieldType.type)
-    for (const item of [...new Set(enums)].sort()) {
-      sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('../enums', `${camelCase(item)}.args`), namedImports: [item] })
-    }
-  })
+  const fileDirPath = path.resolve(outputDir, 'common', 'outputs')
 
   outputTypesToGenerate.forEach((type) => {
+    // generate from types
+    const filePath = path.resolve(fileDirPath, `${type.typeName}.output.ts`)
+    const sourceFile = project.createSourceFile(filePath, undefined, {
+      overwrite: true,
+    })
+
+    // imports
+    sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
+    outputTypesToGenerate.forEach((type) => {
+      // import args
+      const fieldArgsTypeNames = type.fields.filter((it) => it.argsTypeName).map((it) => it.argsTypeName!)
+      for (const item of [...new Set(fieldArgsTypeNames)].sort()) {
+        sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('./args', `${camelCase(item)}.args`), namedImports: [item] })
+      }
+      // import outputs
+      const outputs = type.fields.filter((field) => field.outputType.location === 'outputObjectTypes').map((field) => field.outputType.type)
+      for (const item of [...new Set(outputs)].sort()) {
+        sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('../outputs', `${camelCase(item)}.args`), namedImports: [item] })
+      }
+      // import enums
+      const enums = type.fields
+        .map((field) => field.outputType)
+        .filter((fieldType) => fieldType.location === 'enumTypes')
+        .map((fieldType) => fieldType.type)
+      for (const item of [...new Set(enums)].sort()) {
+        sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('../enums', `${camelCase(item)}.args`), namedImports: [item] })
+      }
+    })
+
     sourceFile.addClass({
       name: type.typeName,
       isExported: true,
