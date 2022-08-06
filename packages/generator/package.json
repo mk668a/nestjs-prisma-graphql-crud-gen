@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@prisma/client": "4.1.0",
-    "@prisma/generator-helper": "4.1.0",
+    "@prisma/generator-helper": "4.1.1",
     "@prisma/sdk": "4.0.0",
     "pluralize": "^8.0.0",
     "prettier": "2.7.1",
