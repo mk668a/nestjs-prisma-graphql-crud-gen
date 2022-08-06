@@ -1,5 +1,8 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
-import { BoolFilter, DateTimeFilter, StringFilter, StringNullableFilter } from "../../common/inputs";
+import { BoolFilter } from "../../common/inputs/BoolFilter.input";
+import { DateTimeFilter } from "../../common/inputs/DateTimeFilter.input";
+import { StringFilter } from "../../common/inputs/StringFilter.input";
+import { StringNullableFilter } from "../../common/inputs/StringNullableFilter.input";
 
 @NestJsGraphQL.InputType('PostScalarWhereInput', { isAbstract: true })
 export class PostScalarWhereInput {

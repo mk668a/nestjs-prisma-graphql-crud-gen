@@ -1,6 +1,8 @@
 import * as NestJsGraphql from '@nestjs/graphql'
-import { AffectedRowsOutput } from '../common/outputs'
+import { AffectedRowsOutput } from '../common/outputs/AffectedRowsOutput.output'
 import { Post } from '../models/post.model'
+import { AggregatePost } from './outputs/AggregatePost.output'
+import { PostGroupBy } from './outputs/PostGroupBy.output'
 import {
   AggregatePostArgs,
   CreateManyPostArgs,
@@ -15,7 +17,6 @@ import {
   UpdateOnePostArgs,
   UpsertOnePostArgs
 } from './post.args'
-import { AggregatePost, PostGroupBy } from './post.output'
 import { PostService } from './post.service'
 
 @NestJsGraphql.Resolver(() => Post)

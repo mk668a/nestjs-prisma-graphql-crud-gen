@@ -1,5 +1,7 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
-import { DateTimeFilter, StringFilter, StringNullableFilter } from "../../common/inputs";
+import { DateTimeFilter } from "../../common/inputs/DateTimeFilter.input";
+import { StringFilter } from "../../common/inputs/StringFilter.input";
+import { StringNullableFilter } from "../../common/inputs/StringNullableFilter.input";
 import { PostListRelationFilter } from "../../post/inputs/PostListRelationFilter.input";
 
 @NestJsGraphQL.InputType('UsersWhereInput', { isAbstract: true })
