@@ -7,7 +7,7 @@
 <a href="https://github.com/mk668a/nestjs-prisma-graphql-crud-gen/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" /></a>
 </div>
 
-# NestJS Prisma Graphql CRUD Generater
+# NestJS Prisma GraphQL CRUD Generater
 
 Generate CRUD resolvers from GraphQL schema with NestJS and Prisma
 

@@ -1,6 +1,8 @@
 import * as NestJsGraphql from '@nestjs/graphql'
-import { AffectedRowsOutput } from '../common/outputs'
+import { AffectedRowsOutput } from '../common/outputs/AffectedRowsOutput.output'
 import { Users } from '../models/users.model'
+import { AggregateUsers } from './outputs/AggregateUsers.output'
+import { UsersGroupBy } from './outputs/UsersGroupBy.output'
 import {
   AggregateUsersArgs,
   CreateManyUsersArgs,
@@ -15,7 +17,6 @@ import {
   UpdateOneUsersArgs,
   UpsertOneUsersArgs
 } from './users.args'
-import { AggregateUsers, UsersGroupBy } from './users.output'
 import { UsersService } from './users.service'
 
 @NestJsGraphql.Resolver(() => Users)

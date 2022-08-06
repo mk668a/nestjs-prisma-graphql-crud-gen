@@ -1,5 +1,8 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
-import { BoolFieldUpdateOperationsInput, DateTimeFieldUpdateOperationsInput, NullableStringFieldUpdateOperationsInput, StringFieldUpdateOperationsInput } from "../../common/inputs";
+import { BoolFieldUpdateOperationsInput } from "../../common/inputs/BoolFieldUpdateOperationsInput.input";
+import { DateTimeFieldUpdateOperationsInput } from "../../common/inputs/DateTimeFieldUpdateOperationsInput.input";
+import { NullableStringFieldUpdateOperationsInput } from "../../common/inputs/NullableStringFieldUpdateOperationsInput.input";
+import { StringFieldUpdateOperationsInput } from "../../common/inputs/StringFieldUpdateOperationsInput.input";
 
 @NestJsGraphQL.InputType('PostUpdateManyMutationInput', { isAbstract: true })
 export class PostUpdateManyMutationInput {

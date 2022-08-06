@@ -1,7 +1,7 @@
 {
   "name": "nestjs-prisma-graphql-crud-gen",
   "description": "Generate CRUD resolvers from GraphQL schema with NestJS and Prisma",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "dist-cjs/index.js",
   "types": "dist-cjs/index.d.ts",
   "license": "MIT",
@@ -20,8 +20,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "@prisma/client": "4.1.1",
-    "@prisma/generator-helper": "4.1.0",
+    "@prisma/client": "^4.1.1",
+    "@prisma/generator-helper": "^4.1.1",
     "@prisma/sdk": "4.0.0",
     "pluralize": "^8.0.0",
     "prettier": "2.7.1",

@@ -1,5 +1,7 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
-import { DateTimeWithAggregatesFilter, StringNullableWithAggregatesFilter, StringWithAggregatesFilter } from "../../common/inputs";
+import { DateTimeWithAggregatesFilter } from "../../common/inputs/DateTimeWithAggregatesFilter.input";
+import { StringNullableWithAggregatesFilter } from "../../common/inputs/StringNullableWithAggregatesFilter.input";
+import { StringWithAggregatesFilter } from "../../common/inputs/StringWithAggregatesFilter.input";
 
 @NestJsGraphQL.InputType('UsersScalarWhereWithAggregatesInput', { isAbstract: true })
 export class UsersScalarWhereWithAggregatesInput {

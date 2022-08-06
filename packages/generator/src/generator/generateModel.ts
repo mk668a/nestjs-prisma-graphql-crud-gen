@@ -1,5 +1,5 @@
 import path from 'path'
-import { GetAccessorDeclarationStructure, OptionalKind, Project, PropertyDeclarationStructure, Writers } from 'ts-morph'
+import { GetAccessorDeclarationStructure, OptionalKind, Project, PropertyDeclarationStructure } from 'ts-morph'
 import { DmmfDocument } from './dmmf/DmmfDocument'
 import { DMMF } from './dmmf/types'
 import { camelCase, convertNewLines, getArguments } from './helpers'
@@ -39,7 +39,7 @@ export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outp
   if (shouldEmitCountField) {
     for (const elementName of [...new Set([countField.typeGraphQLType])].sort()) {
       sourceFile.addImportDeclaration({
-        moduleSpecifier: path.posix.join('..', modelName, `${modelName}.output`),
+        moduleSpecifier: path.posix.join('..', modelName, 'outputs', `${elementName}.output`),
         namedImports: [elementName],
       })
     }

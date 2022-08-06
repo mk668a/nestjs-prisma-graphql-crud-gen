@@ -1,6 +1,6 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
 import { Post } from "../models/post.model";
-import { UsersCount } from "../users/users.output";
+import { UsersCount } from "../users/outputs/UsersCount.output";
 
 @NestJsGraphQL.ObjectType('Users', { isAbstract: true })
 export class Users {

@@ -1,5 +1,5 @@
 import path from 'path'
-import { GetAccessorDeclarationStructure, OptionalKind, Project, PropertyDeclarationStructure, SetAccessorDeclarationStructure, Writers } from 'ts-morph'
+import { GetAccessorDeclarationStructure, OptionalKind, Project, PropertyDeclarationStructure, SetAccessorDeclarationStructure } from 'ts-morph'
 import { DmmfDocument } from './dmmf/DmmfDocument'
 import { DMMF } from './dmmf/types'
 import { camelCase, getArguments } from './helpers'
@@ -17,20 +17,14 @@ export const generateInput = (dmmfDocument: DmmfDocument, project: Project, outp
     // imports
     sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
     // import commonInputs
-    const commonInputs: string[] = []
     dmmfDocument.schema.inputTypes
       .filter((_inputType) => !_inputType.modelType)
       .forEach((_inputType) => {
-        if (!commonInputs.includes(_inputType.typeName)) {
-          commonInputs.push(_inputType.typeName)
-        }
+        sourceFile.addImportDeclaration({
+          moduleSpecifier: `../../common/inputs/${_inputType.typeName}.input`,
+          namedImports: [_inputType.typeName],
+        })
       })
-    if (commonInputs.length) {
-      sourceFile.addImportDeclaration({
-        moduleSpecifier: `../../common/inputs`,
-        namedImports: commonInputs,
-      })
-    }
     // import inputs
     dmmfDocument.schema.inputTypes
       .filter((_inputType) => _inputType.modelType && _inputType.typeName !== inputType.typeName)
