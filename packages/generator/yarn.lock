@@ -798,12 +798,12 @@
   dependencies:
     "@octokit/openapi-types" "^12.10.0"
 
-"@prisma/client@4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.1.1.tgz#dcb1118397deb8247fbe39a1f3eee5606648adf8"
-  integrity sha512-2pXuIUYxHv5H9o6QTa1VIsl4yMgsAjKQOitlo8WVTB+vo73rmMJITBPavdGUZSWUc7adMkFzEV3y5rVTUQr77Q==
+"@prisma/client@^4.1.1":
+  version "4.9.0"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.9.0.tgz#4a4068f3540732ea5723c008d49ed684d20f9340"
+  integrity sha512-bz6QARw54sWcbyR1lLnF2QHvRW5R/Jxnbbmwh3u+969vUKXtBkXgSgjDA85nji31ZBlf7+FrHDy5x+5ydGyQDg==
   dependencies:
-    "@prisma/engines-version" "4.1.0-48.8d8414deb360336e4698a65aa45a1fbaf1ce13d8"
+    "@prisma/engines-version" "4.9.0-42.ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5"
 
 "@prisma/debug@3.15.2":
   version "3.15.2"
@@ -850,10 +850,10 @@
     strip-ansi "6.0.1"
     undici "5.5.1"
 
-"@prisma/engines-version@4.1.0-48.8d8414deb360336e4698a65aa45a1fbaf1ce13d8":
-  version "4.1.0-48.8d8414deb360336e4698a65aa45a1fbaf1ce13d8"
-  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.1.0-48.8d8414deb360336e4698a65aa45a1fbaf1ce13d8.tgz#ce00e6377126e491a8b1e0e2039c97e2924bd6d9"
-  integrity sha512-cRRJwpHFGFJZvtHbY3GZjMffNBEjjZk68ztn+S2hDgPCGB4H66IK26roK94GJxBodSehwRJ0wGyebC2GoIH1JQ==
+"@prisma/engines-version@4.9.0-42.ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5":
+  version "4.9.0-42.ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5"
+  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.9.0-42.ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5.tgz#9d817a5779fc05b107eb02f63d197ad296d60b3c"
+  integrity sha512-M16aibbxi/FhW7z1sJCX8u+0DriyQYY5AyeTH7plQm9MLnURoiyn3CZBqAyIoQ+Z1pS77usCIibYJWSgleBMBA==
 
 "@prisma/engines@3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11":
   version "3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11"
