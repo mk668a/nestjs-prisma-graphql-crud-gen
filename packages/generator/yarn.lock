@@ -798,12 +798,12 @@
   dependencies:
     "@octokit/openapi-types" "^12.10.0"
 
-"@prisma/client@4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.1.1.tgz#dcb1118397deb8247fbe39a1f3eee5606648adf8"
-  integrity sha512-2pXuIUYxHv5H9o6QTa1VIsl4yMgsAjKQOitlo8WVTB+vo73rmMJITBPavdGUZSWUc7adMkFzEV3y5rVTUQr77Q==
+"@prisma/client@^4.1.1":
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.10.0.tgz#7b7cec082b7cb8885effff48ff4fff65e52dee11"
+  integrity sha512-sBmYb1S6SMKFIESaLMfKqWSalv3pH73cMCsFt9HslJvYjIIcKQCA6PDL2O4SZGWvc4JBef9cg5Gd7d9x3AtKjw==
   dependencies:
-    "@prisma/engines-version" "4.1.0-48.8d8414deb360336e4698a65aa45a1fbaf1ce13d8"
+    "@prisma/engines-version" "4.10.0-84.ca7fcef713137fa11029d519a9780db130cca91d"
 
 "@prisma/debug@3.15.2":
   version "3.15.2"
@@ -823,10 +823,10 @@
     debug "4.3.4"
     strip-ansi "6.0.1"
 
-"@prisma/debug@4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@prisma/debug/-/debug-4.1.1.tgz#8b4447d7c2803cd317a3eb0b65f92ca60fe24353"
-  integrity sha512-mJ4FmFv37XFUabsGmdTT9xqlf7t0xrKleIMGlTCLBrPk4PG+NtOjqiESPpyvyeGea+DUoISLqKxdefF8rJGDzQ==
+"@prisma/debug@4.10.0":
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/@prisma/debug/-/debug-4.10.0.tgz#5b1ab6b6d4812765a60ad8cccb7b5d38afb3b802"
+  integrity sha512-rxVOZKsEyjlQCwN/pkkJO7wEdARt1yRyukSjLa+BF2QTvy2+VgtBmrfys4WDQSnj3jVWeHMpi5GeAoJjKkSKyA==
   dependencies:
     "@types/debug" "4.1.7"
     debug "4.3.4"
@@ -850,10 +850,10 @@
     strip-ansi "6.0.1"
     undici "5.5.1"
 
-"@prisma/engines-version@4.1.0-48.8d8414deb360336e4698a65aa45a1fbaf1ce13d8":
-  version "4.1.0-48.8d8414deb360336e4698a65aa45a1fbaf1ce13d8"
-  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.1.0-48.8d8414deb360336e4698a65aa45a1fbaf1ce13d8.tgz#ce00e6377126e491a8b1e0e2039c97e2924bd6d9"
-  integrity sha512-cRRJwpHFGFJZvtHbY3GZjMffNBEjjZk68ztn+S2hDgPCGB4H66IK26roK94GJxBodSehwRJ0wGyebC2GoIH1JQ==
+"@prisma/engines-version@4.10.0-84.ca7fcef713137fa11029d519a9780db130cca91d":
+  version "4.10.0-84.ca7fcef713137fa11029d519a9780db130cca91d"
+  resolved "https://registry.yarnpkg.com/@prisma/engines-version/-/engines-version-4.10.0-84.ca7fcef713137fa11029d519a9780db130cca91d.tgz#db646ab604b5dc3529080b8fe900240c73e3a71a"
+  integrity sha512-UVpmVlvSaGfY4ue+hh8CTkIesbuXCFUfrr8zk//+u85WwkKfWMtt6nLB2tNSzR1YO8eAA8+HqNf8LM7mnXIq5w==
 
 "@prisma/engines@3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11":
   version "3.16.0-49.da41d2bb3406da22087b849f0e911199ba4fbf11"
@@ -899,11 +899,11 @@
     cross-spawn "7.0.3"
 
 "@prisma/generator-helper@^4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@prisma/generator-helper/-/generator-helper-4.1.1.tgz#6b11076a29505d1d46d5d8bcd2ba95775f42e8c7"
-  integrity sha512-lg6bdU3BmIee1rLQW3i0coO4X8WreQzvoV8c/Uw5kwD4KRkoeW6DNL54TxgmpXvweedxQye/kpOuLRN4wRVcWQ==
+  version "4.10.0"
+  resolved "https://registry.yarnpkg.com/@prisma/generator-helper/-/generator-helper-4.10.0.tgz#dc47265cbd55dc14ce08822f99c14d08f7e2cdb7"
+  integrity sha512-NkQOfZpHUjVjqJ7NN2FymHSLkGd/E0fz5c3RkyESKvQqBy2sFBxt+aFxGsUbUy3FfwvkckC04HdQOXpisAko0A==
   dependencies:
-    "@prisma/debug" "4.1.1"
+    "@prisma/debug" "4.10.0"
     "@types/cross-spawn" "6.0.2"
     chalk "4.1.2"
     cross-spawn "7.0.3"
