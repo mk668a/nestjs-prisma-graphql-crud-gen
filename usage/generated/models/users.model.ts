@@ -1,4 +1,5 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
+import { UserRole } from "../enums/UserRole.enum";
 import { Post } from "../models/post.model";
 import { UsersCount } from "../users/outputs/UsersCount.output";
 
@@ -26,6 +27,9 @@ export class Users {
   updated_at!: Date;
 
   posts?: Post[];
+
+  @NestJsGraphQL.Field(() => UserRole)
+  role!: "ADMIN" | "AUTHOR";
 
   @NestJsGraphQL.Field(() => UsersCount, { nullable: true })
   _count?: UsersCount | null;

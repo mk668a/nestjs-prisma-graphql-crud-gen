@@ -27,4 +27,7 @@ export class UsersOrderByWithRelationInput {
 
   @NestJsGraphQL.Field(() => PostOrderByRelationAggregateInput, { nullable: true })
   posts?: PostOrderByRelationAggregateInput | undefined;
+
+  @NestJsGraphQL.Field(() => SortOrder, { nullable: true })
+  role?: "asc" | "desc" | undefined;
 }

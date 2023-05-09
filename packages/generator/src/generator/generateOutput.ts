@@ -21,34 +21,40 @@ export const generateOutput = (dmmfDocument: DmmfDocument, project: Project, out
     const args: string[] = []
     const outputs: string[] = []
     const enums: string[] = []
-    outputTypesToGenerate
-      .filter((type) => type.modelName !== model.name)
-      .forEach((type) => {
-        // import args
-        for (const item of [...new Set(type.fields.filter((it) => it.argsTypeName).map((it) => it.argsTypeName!))].sort()) {
-          if (!args.includes(item)) args.push(item)
-        }
-        // import outputs
-        for (const item of [
-          ...new Set(type.fields.filter((field) => field.outputType.location === 'outputObjectTypes').map((field) => field.outputType.type)),
-        ].sort()) {
-          if (!outputs.includes(item)) outputs.push(item)
-        }
-        // import enums
-        for (const item of [
-          ...new Set(
-            type.fields
-              .map((field) => field.outputType)
-              .filter((fieldType) => fieldType.location === 'enumTypes')
-              .map((fieldType) => fieldType.type),
-          ),
-        ].sort()) {
-          if (!enums.includes(item)) enums.push(item)
-        }
-      })
-    if (args.length) sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('.', `${modelName}.args`), namedImports: args })
-    if (outputs.length) sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('.', `${modelName}.output`), namedImports: outputs })
-    if (enums.length) sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('.', `${modelName}.enum`), namedImports: enums })
+    outputTypesToGenerate.forEach((type) => {
+      // import args
+      for (const item of [...new Set(type.fields.filter((it) => it.argsTypeName).map((it) => it.argsTypeName!))].sort()) {
+        if (!args.includes(item)) args.push(item)
+      }
+      // import outputs
+      for (const item of [
+        ...new Set(type.fields.filter((field) => field.outputType.location === 'outputObjectTypes').map((field) => field.outputType.type)),
+      ].sort()) {
+        if (!outputs.includes(item)) outputs.push(item)
+      }
+      // import enums
+      for (const item of [
+        ...new Set(
+          type.fields
+            .map((field) => field.outputType)
+            .filter((fieldType) => fieldType.location === 'enumTypes' && fieldType.namespace === 'model')
+            .map((fieldType) => fieldType.type),
+        ),
+      ].sort()) {
+        if (!enums.includes(item)) enums.push(item)
+      }
+    })
+    if (args.length) sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('..', `${modelName}.args`), namedImports: args })
+    if (outputs.length) {
+      for (const item of [...new Set(outputs)].sort()) {
+        sourceFile.addImportDeclaration({ moduleSpecifier: `./${item}.output`, namedImports: [item] })
+      }
+    }
+    if (enums.length) {
+      for (const item of [...new Set(enums)].sort()) {
+        sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join(`../../enums/${item}.enum`), namedImports: [item] })
+      }
+    }
 
     sourceFile.addClass({
       name: type.typeName,

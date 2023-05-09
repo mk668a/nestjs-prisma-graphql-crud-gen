@@ -1,5 +1,6 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
 import { DateTimeFilter } from "../../common/inputs/DateTimeFilter.input";
+import { EnumUserRoleFilter } from "../../common/inputs/EnumUserRoleFilter.input";
 import { StringFilter } from "../../common/inputs/StringFilter.input";
 import { StringNullableFilter } from "../../common/inputs/StringNullableFilter.input";
 import { PostListRelationFilter } from "../../post/inputs/PostListRelationFilter.input";
@@ -38,4 +39,7 @@ export class UsersWhereInput {
 
   @NestJsGraphQL.Field(() => PostListRelationFilter, { nullable: true })
   posts?: PostListRelationFilter | undefined;
+
+  @NestJsGraphQL.Field(() => EnumUserRoleFilter, { nullable: true })
+  role?: EnumUserRoleFilter | undefined;
 }

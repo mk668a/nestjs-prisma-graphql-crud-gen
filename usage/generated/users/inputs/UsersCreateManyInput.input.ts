@@ -1,4 +1,5 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
+import { UserRole } from "../../enums/UserRole.enum";
 
 @NestJsGraphQL.InputType('UsersCreateManyInput', { isAbstract: true })
 export class UsersCreateManyInput {
@@ -22,4 +23,7 @@ export class UsersCreateManyInput {
 
   @NestJsGraphQL.Field(() => Date, { nullable: true })
   updated_at?: Date | undefined;
+
+  @NestJsGraphQL.Field(() => UserRole)
+  role!: "ADMIN" | "AUTHOR";
 }
