@@ -12,6 +12,11 @@ export const generateCommonEnums = (dmmfDocument: DmmfDocument, project: Project
   sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
 
   const datamodelEnumNames = dmmfDocument.datamodel.enums.map((enumDef) => enumDef.typeName)
+  datamodelEnumNames.forEach((enumDef) => {
+      sourceFile.addStatements([
+          `export * from "../enums/${enumDef}.enum";`
+      ])
+  })
   dmmfDocument.schema.enums
     // skip enums from datamodel
     .filter((enumDef) => !datamodelEnumNames.includes(enumDef.typeName))
