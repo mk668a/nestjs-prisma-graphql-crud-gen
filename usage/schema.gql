@@ -23,6 +23,7 @@ type Users {
   gender: String
   created_at: DateTime!
   updated_at: DateTime!
+  role: UserRole!
   _count: UsersCount
 }
 
@@ -30,6 +31,11 @@ type Users {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+enum UserRole {
+  ADMIN
+  AUTHOR
+}
 
 type UsersCount {
   posts: Int!
@@ -47,6 +53,7 @@ input UsersWhereInput {
   created_at: DateTimeFilter
   updated_at: DateTimeFilter
   posts: PostListRelationFilter
+  role: EnumUserRoleFilter
 }
 
 input StringFilter {
@@ -169,6 +176,20 @@ input UsersRelationFilter {
   isNot: UsersWhereInput
 }
 
+input EnumUserRoleFilter {
+  equals: UserRole
+  in: [UserRole!]
+  notIn: [UserRole!]
+  not: NestedEnumUserRoleFilter
+}
+
+input NestedEnumUserRoleFilter {
+  equals: UserRole
+  in: [UserRole!]
+  notIn: [UserRole!]
+  not: NestedEnumUserRoleFilter
+}
+
 input UsersOrderByWithRelationInput {
   id: SortOrder
   first_name: SortOrder
@@ -178,6 +199,7 @@ input UsersOrderByWithRelationInput {
   created_at: SortOrder
   updated_at: SortOrder
   posts: PostOrderByRelationAggregateInput
+  role: SortOrder
 }
 
 enum SortOrder {
@@ -202,6 +224,7 @@ enum UsersScalarFieldEnum {
   gender
   created_at
   updated_at
+  role
 }
 
 type UsersGroupBy {
@@ -212,6 +235,7 @@ type UsersGroupBy {
   gender: String
   created_at: DateTime!
   updated_at: DateTime!
+  role: UserRole!
   _count: UsersCountAggregate
   _min: UsersMinAggregate
   _max: UsersMaxAggregate
@@ -225,6 +249,7 @@ type UsersCountAggregate {
   gender: Int!
   created_at: Int!
   updated_at: Int!
+  role: Int!
   _all: Int!
 }
 
@@ -236,6 +261,7 @@ type UsersMinAggregate {
   gender: String
   created_at: DateTime
   updated_at: DateTime
+  role: UserRole
 }
 
 type UsersMaxAggregate {
@@ -246,6 +272,7 @@ type UsersMaxAggregate {
   gender: String
   created_at: DateTime
   updated_at: DateTime
+  role: UserRole
 }
 
 input UsersOrderByWithAggregationInput {
@@ -256,6 +283,7 @@ input UsersOrderByWithAggregationInput {
   gender: SortOrder
   created_at: SortOrder
   updated_at: SortOrder
+  role: SortOrder
   _count: UsersCountOrderByAggregateInput
   _max: UsersMaxOrderByAggregateInput
   _min: UsersMinOrderByAggregateInput
@@ -269,6 +297,7 @@ input UsersCountOrderByAggregateInput {
   gender: SortOrder
   created_at: SortOrder
   updated_at: SortOrder
+  role: SortOrder
 }
 
 input UsersMaxOrderByAggregateInput {
@@ -279,6 +308,7 @@ input UsersMaxOrderByAggregateInput {
   gender: SortOrder
   created_at: SortOrder
   updated_at: SortOrder
+  role: SortOrder
 }
 
 input UsersMinOrderByAggregateInput {
@@ -289,6 +319,7 @@ input UsersMinOrderByAggregateInput {
   gender: SortOrder
   created_at: SortOrder
   updated_at: SortOrder
+  role: SortOrder
 }
 
 input UsersScalarWhereWithAggregatesInput {
@@ -302,6 +333,7 @@ input UsersScalarWhereWithAggregatesInput {
   gender: StringNullableWithAggregatesFilter
   created_at: DateTimeWithAggregatesFilter
   updated_at: DateTimeWithAggregatesFilter
+  role: EnumUserRoleWithAggregatesFilter
 }
 
 input StringWithAggregatesFilter {
@@ -422,6 +454,26 @@ input NestedDateTimeWithAggregatesFilter {
   _count: NestedIntFilter
   _min: NestedDateTimeFilter
   _max: NestedDateTimeFilter
+}
+
+input EnumUserRoleWithAggregatesFilter {
+  equals: UserRole
+  in: [UserRole!]
+  notIn: [UserRole!]
+  not: NestedEnumUserRoleWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedEnumUserRoleFilter
+  _max: NestedEnumUserRoleFilter
+}
+
+input NestedEnumUserRoleWithAggregatesFilter {
+  equals: UserRole
+  in: [UserRole!]
+  notIn: [UserRole!]
+  not: NestedEnumUserRoleWithAggregatesFilter
+  _count: NestedIntFilter
+  _min: NestedEnumUserRoleFilter
+  _max: NestedEnumUserRoleFilter
 }
 
 type AggregateUsers {
@@ -613,6 +665,7 @@ input UsersCreateInput {
   created_at: DateTime
   updated_at: DateTime
   posts: PostCreateNestedManyWithoutAuthorInput
+  role: UserRole!
 }
 
 input PostCreateNestedManyWithoutAuthorInput {
@@ -662,6 +715,7 @@ input UsersCreateManyInput {
   gender: String
   created_at: DateTime
   updated_at: DateTime
+  role: UserRole!
 }
 
 input UsersUpdateInput {
@@ -673,6 +727,7 @@ input UsersUpdateInput {
   created_at: DateTimeFieldUpdateOperationsInput
   updated_at: DateTimeFieldUpdateOperationsInput
   posts: PostUpdateManyWithoutAuthorNestedInput
+  role: EnumUserRoleFieldUpdateOperationsInput
 }
 
 input StringFieldUpdateOperationsInput {
@@ -752,6 +807,10 @@ input PostUpdateManyMutationInput {
   content: NullableStringFieldUpdateOperationsInput
 }
 
+input EnumUserRoleFieldUpdateOperationsInput {
+  set: UserRole
+}
+
 input UsersUpdateManyMutationInput {
   id: StringFieldUpdateOperationsInput
   first_name: StringFieldUpdateOperationsInput
@@ -760,6 +819,7 @@ input UsersUpdateManyMutationInput {
   gender: NullableStringFieldUpdateOperationsInput
   created_at: DateTimeFieldUpdateOperationsInput
   updated_at: DateTimeFieldUpdateOperationsInput
+  role: EnumUserRoleFieldUpdateOperationsInput
 }
 
 input PostCreateInput {
@@ -786,6 +846,7 @@ input UsersCreateWithoutPostsInput {
   gender: String
   created_at: DateTime
   updated_at: DateTime
+  role: UserRole!
 }
 
 input UsersCreateOrConnectWithoutPostsInput {
@@ -836,4 +897,5 @@ input UsersUpdateWithoutPostsInput {
   gender: NullableStringFieldUpdateOperationsInput
   created_at: DateTimeFieldUpdateOperationsInput
   updated_at: DateTimeFieldUpdateOperationsInput
+  role: EnumUserRoleFieldUpdateOperationsInput
 }

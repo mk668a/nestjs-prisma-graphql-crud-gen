@@ -27,6 +27,9 @@ export class UsersOrderByWithAggregationInput {
   @NestJsGraphQL.Field(() => SortOrder, { nullable: true })
   updated_at?: "asc" | "desc" | undefined;
 
+  @NestJsGraphQL.Field(() => SortOrder, { nullable: true })
+  role?: "asc" | "desc" | undefined;
+
   @NestJsGraphQL.Field(() => UsersCountOrderByAggregateInput, { nullable: true })
   _count?: UsersCountOrderByAggregateInput | undefined;
 

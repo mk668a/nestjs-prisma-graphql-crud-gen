@@ -39,7 +39,7 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
             fields
               .filter((field) => !field.typeName)
               .map((field) => field.selectedInputType)
-              .filter((argType) => argType.location === 'enumTypes')
+              .filter((argType) => argType.location === 'enumTypes' && argType.namespace === 'model')
               .map((argType) => argType.type as string),
           ),
         ].sort()) {

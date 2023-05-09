@@ -8,9 +8,9 @@ export const generateService = (project: Project, outputDir: string, model: DMMF
   const filePath = path.resolve(outputDir, `${modelName}/${modelName}.service.ts`)
   const sourceFile = project.createSourceFile(filePath, undefined, { overwrite: true })
 
-  sourceFile.addStatements(`import { Injectable } from '@nestjs/common'
-    import { PrismaService } from '../../prisma.service'
-    import { Prisma } from '@prisma/client'
+  sourceFile.addStatements(`import { Injectable } from '@nestjs/common';
+    import { PrismaService } from '../../prisma.service';
+    import { Prisma } from '@prisma/client';
     
     @Injectable()
     export class ${model.name}Service {

@@ -1,4 +1,5 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
+import { UserRole } from "../../enums/UserRole.enum";
 import { PostCreateNestedManyWithoutAuthorInput } from "../../post/inputs/PostCreateNestedManyWithoutAuthorInput.input";
 
 @NestJsGraphQL.InputType('UsersCreateInput', { isAbstract: true })
@@ -26,4 +27,7 @@ export class UsersCreateInput {
 
   @NestJsGraphQL.Field(() => PostCreateNestedManyWithoutAuthorInput, { nullable: true })
   posts?: PostCreateNestedManyWithoutAuthorInput | undefined;
+
+  @NestJsGraphQL.Field(() => UserRole)
+  role!: "ADMIN" | "AUTHOR";
 }

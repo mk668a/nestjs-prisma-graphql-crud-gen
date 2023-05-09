@@ -17,19 +17,34 @@ export const generateCommonInput = (dmmfDocument: DmmfDocument, project: Project
       // imports
       sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
       // import enums
-      const enums: string[] = []
+      const enumsPrisma: string[] = []
+      const enumsModel: string[] = []
       dmmfDocument.schema.inputTypes.forEach((inputType) => {
-        enums.push(
+        enumsPrisma.push(
           ...inputType.fields
             .map((field) => field.selectedInputType)
-            .filter((fieldType) => fieldType.location === 'enumTypes')
+            .filter((fieldType) => fieldType.location === 'enumTypes' && fieldType.namespace === 'prisma')
+            .map((fieldType) => fieldType.type as string),
+        )
+        enumsModel.push(
+          ...inputType.fields
+            .map((field) => field.selectedInputType)
+            .filter((fieldType) => fieldType.location === 'enumTypes' && fieldType.namespace === 'model')
             .map((fieldType) => fieldType.type as string),
         )
       })
-      if (enums.length) {
+      if (enumsPrisma.length) {
         sourceFile.addImportDeclaration({
-          moduleSpecifier: '../enums',
-          namedImports: [...new Set(enums)],
+          moduleSpecifier: '../../common/enums',
+          namedImports: [...new Set(enumsPrisma)],
+        })
+      }
+      if (enumsModel.length) {
+        enumsModel.forEach((name) => {
+          sourceFile.addImportDeclaration({
+            moduleSpecifier: `../../enums/${name}.enum`,
+            namedImports: [name],
+          })
         })
       }
 

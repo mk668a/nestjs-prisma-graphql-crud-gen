@@ -1,4 +1,5 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
+import { UserRole } from "../../enums/UserRole.enum";
 import { UsersCountAggregate } from "./UsersCountAggregate.output";
 import { UsersMaxAggregate } from "./UsersMaxAggregate.output";
 import { UsersMinAggregate } from "./UsersMinAggregate.output";
@@ -25,6 +26,9 @@ export class UsersGroupBy {
 
   @NestJsGraphQL.Field(() => Date)
   updated_at!: Date;
+
+  @NestJsGraphQL.Field(() => UserRole)
+  role!: "ADMIN" | "AUTHOR";
 
   @NestJsGraphQL.Field(() => UsersCountAggregate, { nullable: true })
   _count!: UsersCountAggregate | null;
