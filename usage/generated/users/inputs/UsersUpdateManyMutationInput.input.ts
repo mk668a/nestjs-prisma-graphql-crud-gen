@@ -1,5 +1,6 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
 import { DateTimeFieldUpdateOperationsInput } from "../../common/inputs/DateTimeFieldUpdateOperationsInput.input";
+import { EnumUserRoleFieldUpdateOperationsInput } from "../../common/inputs/EnumUserRoleFieldUpdateOperationsInput.input";
 import { NullableStringFieldUpdateOperationsInput } from "../../common/inputs/NullableStringFieldUpdateOperationsInput.input";
 import { StringFieldUpdateOperationsInput } from "../../common/inputs/StringFieldUpdateOperationsInput.input";
 
@@ -25,4 +26,7 @@ export class UsersUpdateManyMutationInput {
 
   @NestJsGraphQL.Field(() => DateTimeFieldUpdateOperationsInput, { nullable: true })
   updated_at?: DateTimeFieldUpdateOperationsInput | undefined;
+
+  @NestJsGraphQL.Field(() => EnumUserRoleFieldUpdateOperationsInput, { nullable: true })
+  role?: EnumUserRoleFieldUpdateOperationsInput | undefined;
 }

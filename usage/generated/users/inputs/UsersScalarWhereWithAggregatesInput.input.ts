@@ -1,5 +1,6 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
 import { DateTimeWithAggregatesFilter } from "../../common/inputs/DateTimeWithAggregatesFilter.input";
+import { EnumUserRoleWithAggregatesFilter } from "../../common/inputs/EnumUserRoleWithAggregatesFilter.input";
 import { StringNullableWithAggregatesFilter } from "../../common/inputs/StringNullableWithAggregatesFilter.input";
 import { StringWithAggregatesFilter } from "../../common/inputs/StringWithAggregatesFilter.input";
 
@@ -34,4 +35,7 @@ export class UsersScalarWhereWithAggregatesInput {
 
   @NestJsGraphQL.Field(() => DateTimeWithAggregatesFilter, { nullable: true })
   updated_at?: DateTimeWithAggregatesFilter | undefined;
+
+  @NestJsGraphQL.Field(() => EnumUserRoleWithAggregatesFilter, { nullable: true })
+  role?: EnumUserRoleWithAggregatesFilter | undefined;
 }

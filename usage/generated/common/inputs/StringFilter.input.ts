@@ -1,5 +1,5 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
-import { QueryMode } from "../enums";
+import { QueryMode } from "../../common/enums";
 import { NestedStringFilter } from "./NestedStringFilter.input";
 
 @NestJsGraphQL.InputType('StringFilter', { isAbstract: true })

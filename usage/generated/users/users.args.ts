@@ -73,7 +73,7 @@ export class FindFirstUsersArgs {
   skip?: number | undefined;
 
   @NestJsGraphQL.Field(() => [UsersScalarFieldEnum], { nullable: true })
-  distinct?: Array<"id" | "first_name" | "last_name" | "email" | "gender" | "created_at" | "updated_at"> | undefined;
+  distinct?: Array<"id" | "first_name" | "last_name" | "email" | "gender" | "created_at" | "updated_at" | "role"> | undefined;
 }
 
 @NestJsGraphQL.ArgsType()
@@ -94,7 +94,7 @@ export class FindManyUsersArgs {
   skip?: number | undefined;
 
   @NestJsGraphQL.Field(() => [UsersScalarFieldEnum], { nullable: true })
-  distinct?: Array<"id" | "first_name" | "last_name" | "email" | "gender" | "created_at" | "updated_at"> | undefined;
+  distinct?: Array<"id" | "first_name" | "last_name" | "email" | "gender" | "created_at" | "updated_at" | "role"> | undefined;
 }
 
 @NestJsGraphQL.ArgsType()
@@ -112,7 +112,7 @@ export class GroupByUsersArgs {
   orderBy?: UsersOrderByWithAggregationInput[] | undefined;
 
   @NestJsGraphQL.Field(() => [UsersScalarFieldEnum])
-  by!: Array<"id" | "first_name" | "last_name" | "email" | "gender" | "created_at" | "updated_at">;
+  by!: Array<"id" | "first_name" | "last_name" | "email" | "gender" | "created_at" | "updated_at" | "role">;
 
   @NestJsGraphQL.Field(() => UsersScalarWhereWithAggregatesInput, { nullable: true })
   having?: UsersScalarWhereWithAggregatesInput | undefined;

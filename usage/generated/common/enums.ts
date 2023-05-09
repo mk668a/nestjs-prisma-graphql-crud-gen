@@ -7,7 +7,8 @@ export enum UsersScalarFieldEnum {
   email = "email",
   gender = "gender",
   created_at = "created_at",
-  updated_at = "updated_at"
+  updated_at = "updated_at",
+  role = "role"
 }
 NestJsGraphQL.registerEnumType(UsersScalarFieldEnum, {
   name: "UsersScalarFieldEnum",

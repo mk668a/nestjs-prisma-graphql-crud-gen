@@ -1,4 +1,5 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
+import { UserRole } from "../../enums/UserRole.enum";
 
 @NestJsGraphQL.ObjectType('UsersMinAggregate', { isAbstract: true })
 export class UsersMinAggregate {
@@ -22,4 +23,7 @@ export class UsersMinAggregate {
 
   @NestJsGraphQL.Field(() => Date, { nullable: true })
   updated_at!: Date | null;
+
+  @NestJsGraphQL.Field(() => UserRole, { nullable: true })
+  role!: "ADMIN" | "AUTHOR" | null;
 }

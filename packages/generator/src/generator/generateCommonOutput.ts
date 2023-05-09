@@ -22,23 +22,35 @@ export const generateCommonOutput = (dmmfDocument: DmmfDocument, project: Projec
     // imports
     sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
     outputTypesToGenerate.forEach((type) => {
-      // import args
-      const fieldArgsTypeNames = type.fields.filter((it) => it.argsTypeName).map((it) => it.argsTypeName!)
-      for (const item of [...new Set(fieldArgsTypeNames)].sort()) {
-        sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('./args', `${camelCase(item)}.args`), namedImports: [item] })
-      }
       // import outputs
       const outputs = type.fields.filter((field) => field.outputType.location === 'outputObjectTypes').map((field) => field.outputType.type)
       for (const item of [...new Set(outputs)].sort()) {
-        sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('../outputs', `${camelCase(item)}.args`), namedImports: [item] })
+        sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('../outputs', `${camelCase(item)}.output`), namedImports: [item] })
+      }
+      if (outputs.length) {
+        for (const item of [...new Set(outputs)].sort()) {
+          sourceFile.addImportDeclaration({ moduleSpecifier: `./${item}.output`, namedImports: [item] })
+        }
       }
       // import enums
-      const enums = type.fields
+      const enumsPrisma = type.fields
         .map((field) => field.outputType)
-        .filter((fieldType) => fieldType.location === 'enumTypes')
+        .filter((fieldType) => fieldType.location === 'enumTypes' && fieldType.namespace === 'prisma')
         .map((fieldType) => fieldType.type)
-      for (const item of [...new Set(enums)].sort()) {
-        sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('../enums', `${camelCase(item)}.args`), namedImports: [item] })
+      const enumsModel = type.fields
+        .map((field) => field.outputType)
+        .filter((fieldType) => fieldType.location === 'enumTypes' && fieldType.namespace === 'model')
+        .map((fieldType) => fieldType.type)
+
+      if (enumsPrisma.length) {
+        for (const item of [...new Set(enumsPrisma)].sort()) {
+          sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join(`../enums`), namedImports: [item] })
+        }
+      }
+      if (enumsModel.length) {
+        for (const item of [...new Set(enumsPrisma)].sort()) {
+          sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join(`../../enums/${item}.enum`), namedImports: [item] })
+        }
       }
     })
 

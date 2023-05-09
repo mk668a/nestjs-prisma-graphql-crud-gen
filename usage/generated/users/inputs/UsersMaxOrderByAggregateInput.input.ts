@@ -23,4 +23,7 @@ export class UsersMaxOrderByAggregateInput {
 
   @NestJsGraphQL.Field(() => SortOrder, { nullable: true })
   updated_at?: "asc" | "desc" | undefined;
+
+  @NestJsGraphQL.Field(() => SortOrder, { nullable: true })
+  role?: "asc" | "desc" | undefined;
 }

@@ -1,5 +1,5 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
-import { QueryMode } from "../enums";
+import { QueryMode } from "../../common/enums";
 import { NestedIntFilter } from "./NestedIntFilter.input";
 import { NestedStringFilter } from "./NestedStringFilter.input";
 import { NestedStringWithAggregatesFilter } from "./NestedStringWithAggregatesFilter.input";

@@ -1,4 +1,5 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
+import { UserRole } from "../../enums/UserRole.enum";
 
 @NestJsGraphQL.InputType('UsersCreateWithoutPostsInput', { isAbstract: true })
 export class UsersCreateWithoutPostsInput {
@@ -22,4 +23,7 @@ export class UsersCreateWithoutPostsInput {
 
   @NestJsGraphQL.Field(() => Date, { nullable: true })
   updated_at?: Date | undefined;
+
+  @NestJsGraphQL.Field(() => UserRole)
+  role!: "ADMIN" | "AUTHOR";
 }

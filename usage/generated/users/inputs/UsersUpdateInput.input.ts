@@ -1,5 +1,6 @@
 import * as NestJsGraphQL from "@nestjs/graphql";
 import { DateTimeFieldUpdateOperationsInput } from "../../common/inputs/DateTimeFieldUpdateOperationsInput.input";
+import { EnumUserRoleFieldUpdateOperationsInput } from "../../common/inputs/EnumUserRoleFieldUpdateOperationsInput.input";
 import { NullableStringFieldUpdateOperationsInput } from "../../common/inputs/NullableStringFieldUpdateOperationsInput.input";
 import { StringFieldUpdateOperationsInput } from "../../common/inputs/StringFieldUpdateOperationsInput.input";
 import { PostUpdateManyWithoutAuthorNestedInput } from "../../post/inputs/PostUpdateManyWithoutAuthorNestedInput.input";
@@ -29,4 +30,7 @@ export class UsersUpdateInput {
 
   @NestJsGraphQL.Field(() => PostUpdateManyWithoutAuthorNestedInput, { nullable: true })
   posts?: PostUpdateManyWithoutAuthorNestedInput | undefined;
+
+  @NestJsGraphQL.Field(() => EnumUserRoleFieldUpdateOperationsInput, { nullable: true })
+  role?: EnumUserRoleFieldUpdateOperationsInput | undefined;
 }

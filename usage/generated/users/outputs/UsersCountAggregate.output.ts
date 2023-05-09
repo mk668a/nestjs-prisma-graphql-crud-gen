@@ -24,5 +24,8 @@ export class UsersCountAggregate {
   updated_at!: number;
 
   @NestJsGraphQL.Field(() => NestJsGraphQL.Int)
+  role!: number;
+
+  @NestJsGraphQL.Field(() => NestJsGraphQL.Int)
   _all!: number;
 }
