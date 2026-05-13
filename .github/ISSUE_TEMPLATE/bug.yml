@@ -1,0 +1,36 @@
+name: Bug report
+description: Report a problem with the generator
+labels: [bug]
+body:
+  - type: textarea
+    id: schema
+    attributes:
+      label: Minimal schema.prisma
+      description: A trimmed `schema.prisma` that reproduces the issue. **Required.**
+      render: prisma
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Include any error output. Run with `DEBUG=nestjs-prisma-crud-gen` for verbose generator logs.
+    validations:
+      required: true
+
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: nestjs-prisma-graphql-crud-gen / nestjs-prisma-graphql-crud-gen-runtime / prisma / Node
+      placeholder: e.g. 2.0.0 / 2.0.0 / 7.8.0 / 22
+    validations:
+      required: true

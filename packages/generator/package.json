@@ -1,7 +1,7 @@
 {
   "name": "nestjs-prisma-graphql-crud-gen",
   "description": "Generate CRUD resolvers from GraphQL schema with NestJS and Prisma",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "main": "dist-cjs/index.js",
   "types": "dist-cjs/index.d.ts",
   "license": "MIT",
@@ -9,36 +9,33 @@
     "nestjs-prisma-graphql-crud-gen": "./dist-cjs/index.js"
   },
   "engines": {
-    "node": ">=14.0"
+    "node": ">=20.0"
   },
   "scripts": {
     "start": "node dist-cjs/bin.js",
     "dev": "npx tsc -w",
     "clean": "rm -rf dist-cjs dist-esm node_modules/.cache",
     "build": "yarn clean && npx tsc --build tsconfig.cjs.json tsconfig.esm.json",
-    "prepack": "yarn build",
+    "prepublishOnly": "yarn build && yarn test",
     "test": "jest"
   },
   "dependencies": {
-    "@prisma/client": "^4.1.1",
-    "@prisma/generator-helper": "^4.1.1",
-    "@prisma/sdk": "4.0.0",
+    "@prisma/client": "^7.8.0",
+    "@prisma/generator-helper": "^7.8.0",
+    "@prisma/internals": "^7.8.0",
     "pluralize": "^8.0.0",
-    "prettier": "2.7.1",
-    "ts-morph": "^15.1.0"
+    "prettier": "^3.3.0",
+    "ts-morph": "^28.0.0"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "@types/jest": "27.0.3",
-    "@types/node": "18.0.6",
-    "@types/pluralize": "^0.0.29",
-    "@types/prettier": "2.7.0",
-    "jest": "27.4.7",
-    "prisma": "4.1.1",
-    "semantic-release": "^18.0.1",
-    "ts-jest": "27.1.4",
-    "typescript": "4.7.4"
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.12.0",
+    "@types/pluralize": "^0.0.33",
+    "@types/prettier": "^3.0.0",
+    "jest": "^29.7.0",
+    "prisma": "^7.8.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.4.0"
   },
   "homepage": "https://github.com/mk668a/nestjs-prisma-graphql-crud-gen",
   "files": [

@@ -1,4 +1,4 @@
-import { DMMF as PrismaDMMF } from '@prisma/client/runtime'
+import { DMMF as PrismaDMMF } from '@prisma/generator-helper'
 import { DMMF } from './types'
 import { transformSchema, transformMappings, transformBareModel, transformModelWithFields, transformEnums, generateRelationModel } from './transform'
 import { EmitBlockKind, GeneratorOptions } from '../options'
@@ -12,11 +12,14 @@ export class DmmfDocument implements DMMF.Document {
   relationModels: DMMF.RelationModel[]
 
   constructor({ datamodel, schema, mappings }: PrismaDMMF.Document, public options: GeneratorOptions) {
-    const enumTypes = [...(schema.enumTypes.prisma ?? []), ...(schema.enumTypes.model ?? [])]
-    const models = [...datamodel.models, ...datamodel.types]
+    // Prisma 7 marks DMMF as ReadonlyDeep; cast to writable for our transforms.
+    const writableSchema = schema as unknown as any
+    const enumTypes = [...(schema.enumTypes.prisma ?? []), ...(schema.enumTypes.model ?? [])] as any[]
+    const models = [...datamodel.models, ...datamodel.types] as any[]
+    const modelOperations = [...mappings.modelOperations] as any[]
 
     // transform bare model without fields
-    this.models = models.map(transformBareModel)
+    this.models = models.map(transformBareModel(this))
     // transform enums before model fields to map enum types to enum values string union
     this.enums = enumTypes.map(transformEnums(this))
     // then transform once again to map the fields (it requires mapped model type names)
@@ -26,14 +29,14 @@ export class DmmfDocument implements DMMF.Document {
 
     this.datamodel = {
       models: this.models,
-      enums: datamodel.enums.map(transformEnums(this)),
+      enums: ([...datamodel.enums] as any[]).map(transformEnums(this)),
       types: [],
     }
     this.schema = {
-      ...transformSchema(schema, this),
+      ...transformSchema(writableSchema, this),
       enums: this.enums,
     }
-    this.modelMappings = transformMappings(mappings.modelOperations, this, options)
+    this.modelMappings = transformMappings(modelOperations, this, options)
     this.relationModels = this.models
       .filter((model) => model.fields.some((field) => field.relationName !== undefined && !field.isOmitted.output))
       .filter((model) => {

@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 generator custom_generator {
@@ -10,7 +9,6 @@ generator custom_generator {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 model Users {
@@ -58,4 +56,58 @@ enum Language {
   Go
   Python
   Cpp
+}
+
+// --- Repro models for issue #142 (silent failures on complex schemas) ---
+
+// Self-relation
+model Category {
+  id        String     @id @default(cuid())
+  name      String
+  parentId  String?
+  parent    Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryHierarchy")
+}
+
+// Composite primary key
+model Membership {
+  userId    String
+  groupId   String
+  role      String   @default("member")
+  joinedAt  DateTime @default(now())
+  group     Group    @relation(fields: [groupId], references: [id])
+
+  @@id([userId, groupId])
+  @@index([groupId])
+}
+
+model Group {
+  id          String       @id @default(cuid())
+  name        String
+  memberships Membership[]
+  tags        Tag[]
+}
+
+// Implicit many-to-many
+model Tag {
+  id     String  @id @default(cuid())
+  label  String  @unique
+  groups Group[]
+}
+
+// Multiple relations between the same two models
+model Conversation {
+  id          String   @id @default(cuid())
+  initiatorId String
+  responderId String
+  initiator   Account  @relation("InitiatedConversations", fields: [initiatorId], references: [id])
+  responder   Account  @relation("RespondedConversations", fields: [responderId], references: [id])
+  createdAt   DateTime @default(now())
+}
+
+model Account {
+  id                      String         @id @default(cuid())
+  handle                  String         @unique
+  initiatedConversations  Conversation[] @relation("InitiatedConversations")
+  respondedConversations  Conversation[] @relation("RespondedConversations")
 }

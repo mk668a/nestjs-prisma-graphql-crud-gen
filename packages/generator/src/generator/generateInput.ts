@@ -5,7 +5,7 @@ import { DMMF } from './dmmf/types'
 import { camelCase, getArguments } from './helpers'
 
 export const generateInput = (dmmfDocument: DmmfDocument, project: Project, outputDir: string, model: DMMF.Model) => {
-  const modelName = camelCase(model.name)
+  const modelName = camelCase(model.typeName)
   const inputTypesToGenerate = dmmfDocument.schema.inputTypes.filter((inputType) => inputType.modelType && inputType.modelName === model.name)
 
   inputTypesToGenerate.forEach((inputType) => {
@@ -25,12 +25,14 @@ export const generateInput = (dmmfDocument: DmmfDocument, project: Project, outp
           namedImports: [_inputType.typeName],
         })
       })
-    // import inputs
+    // import inputs (other models' inputs are placed under their typeName-based directory)
     dmmfDocument.schema.inputTypes
       .filter((_inputType) => _inputType.modelType && _inputType.typeName !== inputType.typeName)
       .forEach((_inputType) => {
+        const refModel = dmmfDocument.datamodel.models.find((m) => m.name === _inputType.modelName)
+        const dir = camelCase(refModel?.typeName ?? _inputType.modelName!)
         sourceFile.addImportDeclaration({
-          moduleSpecifier: `../../${camelCase(_inputType.modelName!)}/inputs/${_inputType.typeName}.input`,
+          moduleSpecifier: `../../${dir}/inputs/${_inputType.typeName}.input`,
           namedImports: [_inputType.typeName],
         })
       })

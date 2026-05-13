@@ -21,18 +21,24 @@ export const generateCommonOutput = (dmmfDocument: DmmfDocument, project: Projec
 
     // imports
     sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
-    outputTypesToGenerate.forEach((type) => {
-      // import outputs
-      const outputs = type.fields.filter((field) => field.outputType.location === 'outputObjectTypes').map((field) => field.outputType.type)
-      for (const item of [...new Set(outputs)].sort()) {
-        sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join('../outputs', `${camelCase(item)}.output`), namedImports: [item] })
+    // Each output type may reference (a) a model type (lives at ../../models/<typeName>.model) or
+    // (b) another non-model common output (lives in this same common/outputs/ dir).
+    const outputs = type.fields.filter((field) => field.outputType.location === 'outputObjectTypes').map((field) => field.outputType.type)
+    for (const item of [...new Set(outputs)].sort()) {
+      if (item === type.typeName) continue
+      const refModel = dmmfDocument.datamodel.models.find((m) => m.typeName === item || m.name === item)
+      if (refModel) {
+        sourceFile.addImportDeclaration({
+          moduleSpecifier: path.posix.join('../../models', `${camelCase(refModel.typeName)}.model`),
+          namedImports: [refModel.typeName],
+        })
+      } else {
+        sourceFile.addImportDeclaration({ moduleSpecifier: `./${item}.output`, namedImports: [item] })
       }
-      if (outputs.length) {
-        for (const item of [...new Set(outputs)].sort()) {
-          sourceFile.addImportDeclaration({ moduleSpecifier: `./${item}.output`, namedImports: [item] })
-        }
-      }
+    }
+    {
       // import enums
+      // (was a stray duplicate inner forEach loop in v1 — keep the enum logic, drop the duplication)
       const enumsPrisma = type.fields
         .map((field) => field.outputType)
         .filter((fieldType) => fieldType.location === 'enumTypes' && fieldType.namespace === 'prisma')
@@ -52,7 +58,7 @@ export const generateCommonOutput = (dmmfDocument: DmmfDocument, project: Projec
           sourceFile.addImportDeclaration({ moduleSpecifier: path.posix.join(`../../enums/${item}.enum`), namedImports: [item] })
         }
       }
-    })
+    }
 
     sourceFile.addClass({
       name: type.typeName,

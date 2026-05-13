@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nestjs_graphql {
+  provider = "node ../../dist-cjs"
+  output   = "./out-complex"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// repro for issue #142 — self-relation, composite key, implicit m:n, dual-relation
+model Category {
+  id        String     @id @default(cuid())
+  name      String
+  parentId  String?
+  parent    Category?  @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children  Category[] @relation("CategoryHierarchy")
+}
+
+model Membership {
+  userId   String
+  groupId  String
+  role     String   @default("member")
+  joinedAt DateTime @default(now())
+  group    Group    @relation(fields: [groupId], references: [id])
+
+  @@id([userId, groupId])
+}
+
+model Group {
+  id          String       @id @default(cuid())
+  name        String
+  memberships Membership[]
+  tags        Tag[]
+}
+
+model Tag {
+  id     String  @id @default(cuid())
+  label  String  @unique
+  groups Group[]
+}
+
+model Conversation {
+  id          String  @id @default(cuid())
+  initiatorId String
+  responderId String
+  initiator   Account @relation("InitiatedConversations", fields: [initiatorId], references: [id])
+  responder   Account @relation("RespondedConversations", fields: [responderId], references: [id])
+}
+
+model Account {
+  id                     String         @id @default(cuid())
+  handle                 String         @unique
+  initiatedConversations Conversation[] @relation("InitiatedConversations")
+  respondedConversations Conversation[] @relation("RespondedConversations")
+}

@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nestjs_graphql {
+  provider = "node ../../dist-cjs"
+  output   = "./out-basic"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id    String @id @default(cuid())
+  email String @unique
+  name  String
+}

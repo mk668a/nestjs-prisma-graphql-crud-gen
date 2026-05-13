@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: yarn
+          cache-dependency-path: |
+            packages/generator/yarn.lock
+            packages/runtime/yarn.lock
+
+      - name: Install generator deps
+        working-directory: packages/generator
+        run: yarn install --frozen-lockfile
+
+      - name: Install runtime deps
+        working-directory: packages/runtime
+        run: yarn install --frozen-lockfile
+
+      - name: Build runtime
+        working-directory: packages/runtime
+        run: yarn build
+
+      - name: Build generator
+        working-directory: packages/generator
+        run: yarn build
+
+      - name: Run generator tests
+        working-directory: packages/generator
+        run: yarn test --ci
+
+      - name: Verify usage/ regenerates cleanly
+        run: |
+          cd usage
+          yarn install --ignore-engines --frozen-lockfile
+          rm -rf generated
+          npx prisma generate --schema=prisma/schema.prisma
+          test -f generated/user/user.crud.ts
+          test -f generated/category/category.crud.ts

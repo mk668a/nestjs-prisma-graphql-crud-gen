@@ -11,23 +11,23 @@
     "generate": "prisma generate && prisma migrate dev --name init && yarn format"
   },
   "dependencies": {
-    "@nestjs/apollo": "^10.0.19",
-    "@nestjs/common": "^9.0.5",
-    "@nestjs/core": "^9.0.5",
-    "@nestjs/graphql": "^10.0.18",
-    "@nestjs/platform-express": "^9.0.5",
-    "@prisma/client": "^4.1.1",
-    "apollo-server-core": "^3.10.0",
-    "apollo-server-express": "^3.10.0",
-    "graphql": "^16.5.0",
-    "graphql-scalars": "^1.17.0",
-    "reflect-metadata": "^0.1.13",
-    "source-map-support": "^0.5.21",
-    "ts-morph": "^15.1.0"
+    "nestjs-prisma-graphql-crud-gen-runtime": "file:../packages/runtime",
+    "@nestjs/apollo": "^12.0.0",
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/graphql": "^12.0.0",
+    "@nestjs/platform-express": "^10.0.0",
+    "@prisma/client": "^7.8.0",
+    "class-validator": "^0.14.1",
+    "dataloader": "^2.2.3",
+    "graphql": "^16.8.0",
+    "graphql-scalars": "^1.22.0",
+    "reflect-metadata": "^0.2.0",
+    "source-map-support": "^0.5.21"
   },
   "devDependencies": {
-    "@types/node": "16.11.7",
-    "prisma": "^4.1.1",
-    "typescript": "4.5.2"
+    "@types/node": "^20.12.0",
+    "prisma": "^7.8.0",
+    "typescript": "^5.4.0"
   }
 }

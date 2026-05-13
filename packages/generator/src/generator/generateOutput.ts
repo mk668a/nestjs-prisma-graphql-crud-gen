@@ -5,7 +5,7 @@ import { DMMF } from './dmmf/types'
 import { camelCase, getArguments } from './helpers'
 
 export const generateOutput = (dmmfDocument: DmmfDocument, project: Project, outputDir: string, model: DMMF.Model) => {
-  const modelName = camelCase(model.name)
+  const modelName = camelCase(model.typeName)
   const rootTypes = dmmfDocument.schema.outputTypes.filter((type) => ['Query', 'Mutation'].includes(type.name))
   const outputTypesToGenerate: DMMF.OutputType[] = dmmfDocument.schema.outputTypes.filter((type) => type.modelName === model.name && !rootTypes.includes(type))
 

@@ -6,3 +6,17 @@ yarn-error.log
 build
 pnpm-debug.log
 .env*
+
+# TypeScript incremental build state
+*.tsbuildinfo
+
+# Generator snapshot fixtures' regenerable output (the *.prisma inputs are committed; outputs are not)
+packages/generator/__tests__/fixtures/out-*/
+
+# Demo project's generated output (regenerable via `npx prisma generate` — snapshot tests
+# pin the generator output shape, so we don't double-track it here)
+usage/generated/
+usage/schema.gql
+
+# Local debug log written by generator's directive parser
+/tmp/npgc-debug.log

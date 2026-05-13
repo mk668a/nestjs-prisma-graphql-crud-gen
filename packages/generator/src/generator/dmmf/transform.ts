@@ -1,5 +1,15 @@
-import { DMMF as PrismaDMMF } from '@prisma/client/runtime'
+import { DMMF as PrismaDMMF } from '@prisma/generator-helper'
 import { DMMF } from './types'
+
+// Prisma 7 marks DMMF types as ReadonlyDeep<>. We rebuild our own structures
+// from them, so unwrap readonliness at the type boundary.
+type Mutable<T> = { -readonly [P in keyof T]: Mutable<T[P]> }
+type PrismaModel = Mutable<PrismaDMMF.Model>
+type PrismaField = Mutable<PrismaDMMF.Field>
+type PrismaInputType = Mutable<PrismaDMMF.InputType>
+type PrismaOutputType = Mutable<PrismaDMMF.OutputType>
+type PrismaModelMapping = Mutable<PrismaDMMF.ModelMapping>
+type PrismaInputTypeRef = Mutable<PrismaDMMF.InputTypeRef>
 import { parseDocumentationAttributes } from './helpers'
 import {
   getInputTypeName,
@@ -16,7 +26,7 @@ import pluralize from 'pluralize'
 import { GeneratorOptions } from '../options'
 import { supportedQueryActions, supportedMutationActions, InputOmitSetting } from '../config'
 
-export function transformSchema(datamodel: PrismaDMMF.Schema, dmmfDocument: DmmfDocument): Omit<DMMF.Schema, 'enums'> {
+export function transformSchema(datamodel: Mutable<PrismaDMMF.Schema>, dmmfDocument: DmmfDocument): Omit<DMMF.Schema, 'enums'> {
   const inputObjectTypes = [...(datamodel.inputObjectTypes.prisma ?? []), ...(datamodel.inputObjectTypes.model ?? [])]
   const outputObjectTypes = [...(datamodel.outputObjectTypes.prisma ?? []), ...(datamodel.outputObjectTypes.model ?? [])]
 
@@ -28,31 +38,42 @@ export function transformSchema(datamodel: PrismaDMMF.Schema, dmmfDocument: Dmmf
   }
 }
 
-export function transformMappings(mapping: PrismaDMMF.ModelMapping[], dmmfDocument: DmmfDocument, options: GeneratorOptions): DMMF.ModelMapping[] {
+export function transformMappings(mapping: PrismaModelMapping[], dmmfDocument: DmmfDocument, options: GeneratorOptions): DMMF.ModelMapping[] {
   return mapping.map(transformMapping(dmmfDocument, options))
 }
 
-export function transformBareModel(model: PrismaDMMF.Model): DMMF.Model {
-  const attributeArgs = parseDocumentationAttributes<{ name: string }>(model.documentation, 'type', 'model')
-  return {
-    ...model,
-    typeName: attributeArgs.name ?? pascalCase(model.name),
-    fields: [],
-    docs: cleanDocsString(model.documentation),
+export function transformBareModel(dmmfDocument: DmmfDocument | undefined = undefined) {
+  return (model: PrismaModel): DMMF.Model => {
+    const attributeArgs = parseDocumentationAttributes<{ name: string }>(model.documentation, 'type', 'model')
+    const useNormalizedNaming = dmmfDocument?.options.useNormalizedNaming ?? true
+    let typeName: string
+    if (attributeArgs.name) {
+      typeName = attributeArgs.name
+    } else if (useNormalizedNaming) {
+      typeName = pascalCase(pluralize.singular(model.name))
+    } else {
+      typeName = pascalCase(model.name)
+    }
+    return {
+      ...model,
+      typeName,
+      fields: [],
+      docs: cleanDocsString(model.documentation),
+    }
   }
 }
 
 export function transformModelWithFields(dmmfDocument: DmmfDocument) {
-  return (model: PrismaDMMF.Model): DMMF.Model => {
+  return (model: PrismaModel): DMMF.Model => {
     return {
-      ...transformBareModel(model),
+      ...transformBareModel(dmmfDocument)(model),
       fields: model.fields.map(transformModelField(dmmfDocument)),
     }
   }
 }
 
 function transformModelField(dmmfDocument: DmmfDocument) {
-  return (field: PrismaDMMF.Field): DMMF.ModelField => {
+  return (field: PrismaField): DMMF.ModelField => {
     const attributeArgs = parseDocumentationAttributes<{ name: string }>(field.documentation, 'field', 'field')
     const location = field.kind === 'enum' ? 'enumTypes' : field.kind === 'object' ? 'outputObjectTypes' : 'scalar'
     if (typeof field.type !== 'string') {
@@ -84,13 +105,13 @@ function transformModelField(dmmfDocument: DmmfDocument) {
 
 function uncheckedScalarInputsFilter(dmmfDocument: DmmfDocument) {
   const { useUncheckedScalarInputs } = dmmfDocument.options
-  return (inputType: PrismaDMMF.InputType): boolean => {
+  return (inputType: PrismaInputType): boolean => {
     return useUncheckedScalarInputs ? true : !inputType.name.includes('Unchecked')
   }
 }
 
 function transformInputType(dmmfDocument: DmmfDocument) {
-  return (inputType: PrismaDMMF.InputType): DMMF.InputType => {
+  return (inputType: PrismaInputType): DMMF.InputType => {
     const modelName = getModelNameFromInputType(inputType.name)
     const modelType = modelName ? dmmfDocument.datamodel.models.find((it) => it.name === modelName) : undefined
 
@@ -130,7 +151,7 @@ function transformInputType(dmmfDocument: DmmfDocument) {
 }
 
 function transformOutputType(dmmfDocument: DmmfDocument) {
-  return (outputType: PrismaDMMF.OutputType): DMMF.OutputType => {
+  return (outputType: PrismaOutputType): DMMF.OutputType => {
     const modelName = dmmfDocument.datamodel.models.find((it) => it.name === getModelNameFromOutputType(outputType.name))
       ? getModelNameFromOutputType(outputType.name)
       : undefined
@@ -210,12 +231,12 @@ export function getMappedOutputTypeName(dmmfDocument: DmmfDocument, outputTypeNa
 }
 
 function transformMapping(dmmfDocument: DmmfDocument, options: GeneratorOptions) {
-  return (mapping: PrismaDMMF.ModelMapping): DMMF.ModelMapping => {
+  return (mapping: PrismaModelMapping): DMMF.ModelMapping => {
     const { model, plural, ...availableActions } = mapping
     const modelTypeName = dmmfDocument.getModelTypeName(model) ?? model
-    const actions = Object.entries(availableActions)
+    const actions = (Object.entries(availableActions) as Array<[string, string | null | undefined]>)
       .sort(([a], [b]) => a.localeCompare(b))
-      .filter(([actionKind, fieldName]) => fieldName && getOperationKindName(actionKind))
+      .filter((entry): entry is [string, string] => Boolean(entry[1]) && Boolean(getOperationKindName(entry[0])))
       .map<DMMF.Action>(([modelAction, fieldName]) => {
         const kind = modelAction as DMMF.ModelAction
         const actionOutputType = dmmfDocument.schema.outputTypes.find((type) => type.fields.some((field) => field.name === fieldName))
@@ -255,9 +276,9 @@ function transformMapping(dmmfDocument: DmmfDocument, options: GeneratorOptions)
 }
 
 function selectInputTypeFromTypes(dmmfDocument: DmmfDocument) {
-  return (inputTypes: PrismaDMMF.SchemaArgInputType[]): DMMF.SchemaArgInputType => {
+  return (inputTypes: PrismaInputTypeRef[]): DMMF.SchemaArgInputType => {
     const { useUncheckedScalarInputs } = dmmfDocument.options
-    let possibleInputTypes: PrismaDMMF.SchemaArgInputType[]
+    let possibleInputTypes: PrismaInputTypeRef[]
     possibleInputTypes = inputTypes.filter((it) => it.location === 'inputObjectTypes')
     if (possibleInputTypes.length === 0) {
       possibleInputTypes = inputTypes.filter((it) => it.location === 'scalar' && it.type !== 'Null')
@@ -284,7 +305,7 @@ function selectInputTypeFromTypes(dmmfDocument: DmmfDocument) {
     return {
       ...selectedInputType,
       type: inputType,
-    }
+    } as DMMF.SchemaArgInputType
   }
 }
 

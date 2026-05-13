@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator nestjs_graphql {
+  provider = "node ../../dist-cjs"
+  output   = "./out-directives"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// @SoftDelete
+model Article {
+  id        String    @id @default(cuid())
+  title     String
+  body      String
+  /// @HideField
+  password  String?
+  /// @ReadOnly
+  createdAt DateTime  @default(now())
+  deletedAt DateTime?
+}
+
+/// @Crud(only: ["findMany", "findUnique"])
+model PublicLog {
+  id   String @id @default(cuid())
+  body String
+}

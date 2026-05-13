@@ -2,10 +2,11 @@ import path from 'path'
 import { GetAccessorDeclarationStructure, OptionalKind, Project, PropertyDeclarationStructure } from 'ts-morph'
 import { DmmfDocument } from './dmmf/DmmfDocument'
 import { DMMF } from './dmmf/types'
+import { parseFieldDirectives } from './directives'
 import { camelCase, convertNewLines, getArguments } from './helpers'
 
 export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outputDir: string, model: DMMF.Model) => {
-  const modelName = camelCase(model.name)
+  const modelName = camelCase(model.typeName)
   const writeLocation = path.join(outputDir, 'models', `${modelName}.model.ts`)
   const sourceFile = project.createSourceFile(writeLocation, undefined, {
     overwrite: true,
@@ -35,7 +36,7 @@ export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outp
   }
   // import countField
   const countField = modelOutputType.fields.find((it) => it.name === '_count')
-  const shouldEmitCountField = countField !== undefined && dmmfDocument.shouldGenerateBlock('crudResolvers')
+  const shouldEmitCountField = countField !== undefined && dmmfDocument.shouldGenerateBlock('crud')
   if (shouldEmitCountField) {
     for (const elementName of [...new Set([countField.typeGraphQLType])].sort()) {
       sourceFile.addImportDeclaration({
@@ -56,7 +57,13 @@ export const generateModel = (dmmfDocument: DmmfDocument, project: Project, outp
       },
     ],
     properties: [
-      ...model.fields.map<OptionalKind<PropertyDeclarationStructure>>((field) => {
+      ...model.fields
+        .filter((field) => {
+          const dir = parseFieldDirectives((field as any).documentation)
+          // /// @HideField hides on output side
+          return !(dir.hideField?.output)
+        })
+        .map<OptionalKind<PropertyDeclarationStructure>>((field) => {
         const isOptional = !!field.relationName || field.isOmitted.output || (!field.isRequired && field.typeFieldAlias === undefined)
 
         return {

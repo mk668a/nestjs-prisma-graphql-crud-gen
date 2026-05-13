@@ -5,7 +5,7 @@ import { DMMF } from './dmmf/types'
 import { camelCase, getArguments } from './helpers'
 
 export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outputDir: string, model: DMMF.Model) => {
-  const modelName = camelCase(model.name)
+  const modelName = camelCase(model.typeName)
   const writeLocation = path.join(outputDir, modelName, `${modelName}.args.ts`)
   const sourceFile = project.createSourceFile(writeLocation, undefined, {
     overwrite: true,
@@ -14,12 +14,12 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
   // imports
   sourceFile.addImportDeclaration({ moduleSpecifier: '@nestjs/graphql', namespaceImport: 'NestJsGraphQL' })
   const commonEnums: string[] = []
-  dmmfDocument.modelMappings.forEach(async (mapping) => {
+  for (const mapping of dmmfDocument.modelMappings) {
     const actionsWithArgs = mapping.actions.filter((it) => it.argsTypeName !== undefined)
     if (actionsWithArgs.length) {
-      actionsWithArgs.forEach(async (action) => {
+      for (const action of actionsWithArgs) {
         const fields = action.method.args
-        // import inputs
+        // import inputs (each input lives under its owning model's directory)
         for (const item of [
           ...new Set(
             fields
@@ -28,8 +28,11 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
               .map((argInputType) => argInputType.type),
           ),
         ].sort()) {
+          const owningInput = dmmfDocument.schema.inputTypes.find((it) => it.typeName === item)
+          const owningModel = owningInput?.modelName ? dmmfDocument.datamodel.models.find((m) => m.name === owningInput.modelName) : undefined
+          const dir = owningModel ? camelCase(owningModel.typeName) : modelName
           sourceFile.addImportDeclaration({
-            moduleSpecifier: `../${modelName}/inputs/${item}.input`,
+            moduleSpecifier: `../${dir}/inputs/${item}.input`,
             namedImports: [item],
           })
         }
@@ -60,9 +63,9 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
         ].sort()) {
           if (!commonEnums.includes(item)) commonEnums.push(item)
         }
-      })
+      }
     }
-  })
+  }
   if (commonEnums.length) {
     sourceFile.addImportDeclaration({
       moduleSpecifier: `../common/enums`,
@@ -71,11 +74,11 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
   }
 
   // class
-  dmmfDocument.modelMappings.forEach(async (mapping) => {
-    const actionsWithArgs = mapping.actions.filter((it) => it.argsTypeName !== undefined && it.argsTypeName.includes(model.name))
+  for (const mapping of dmmfDocument.modelMappings) {
+    const actionsWithArgs = mapping.actions.filter((it) => it.argsTypeName !== undefined && it.argsTypeName.includes(model.typeName))
 
     if (actionsWithArgs.length) {
-      actionsWithArgs.forEach(async (action) => {
+      for (const action of actionsWithArgs) {
         const fields = action.method.args
 
         sourceFile.addClass({
@@ -103,7 +106,7 @@ export const generateArgs = (dmmfDocument: DmmfDocument, project: Project, outpu
             }
           }),
         })
-      })
+      }
     }
-  })
+  }
 }
