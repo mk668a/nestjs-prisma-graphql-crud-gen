@@ -15,12 +15,14 @@ set -euo pipefail
 DRY_RUN=""
 TAG=""
 ALLOW_DIRTY=""
+OTP=""
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --dry-run) DRY_RUN="--dry-run"; shift ;;
     --tag) TAG="--tag $2"; shift 2 ;;
     --allow-dirty) ALLOW_DIRTY="1"; shift ;;
+    --otp) OTP="--otp $2"; shift 2 ;;
     *) echo "Unknown arg: $1" >&2; exit 1 ;;
   esac
 done
@@ -48,10 +50,10 @@ yarn test
 # Publish runtime first — generator's emitted code imports from it at user-end.
 echo "==> Publishing runtime"
 cd "$ROOT/packages/runtime"
-npm publish $DRY_RUN $TAG
+npm publish $DRY_RUN $TAG $OTP
 
 echo "==> Publishing generator"
 cd "$ROOT/packages/generator"
-npm publish $DRY_RUN $TAG
+npm publish $DRY_RUN $TAG $OTP
 
 echo "==> Done"
