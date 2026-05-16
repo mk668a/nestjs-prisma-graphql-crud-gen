@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`generator handles self-relation / composite key / implicit m:n / dual-relation without silent failure (#142) 1`] = `
 [

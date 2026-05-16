@@ -1,7 +1,7 @@
 {
   "name": "nestjs-prisma-graphql-crud-gen-runtime",
   "description": "Runtime helpers for nestjs-prisma-graphql-crud-gen",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
@@ -15,7 +15,7 @@
   },
   "homepage": "https://github.com/mk668a/nestjs-prisma-graphql-crud-gen#readme",
   "engines": {
-    "node": ">=20.0"
+    "node": ">=22.0"
   },
   "scripts": {
     "clean": "rm -rf dist",
@@ -39,12 +39,12 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/graphql": "^12.0.0",
     "@prisma/client": "^7.8.0",
-    "@types/node": "^20.12.0",
+    "@types/node": "^22.0.0",
     "class-validator": "^0.14.1",
     "dataloader": "^2.2.3",
     "graphql": "^16.8.0",
     "reflect-metadata": "^0.2.0",
-    "typescript": "^5.4.0"
+    "typescript": "^6.0.0"
   },
   "files": [
     "dist"

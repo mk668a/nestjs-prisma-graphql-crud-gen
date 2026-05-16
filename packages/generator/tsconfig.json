@@ -12,8 +12,8 @@
     "forceConsistentCasingInFileNames": true,
     "removeComments": true,
     "sourceMap": true,
-    "baseUrl": ".",
     "moduleResolution": "Node",
+    "ignoreDeprecations": "6.0",
     "rootDir": "./src",
     "newLine": "lf"
   },
