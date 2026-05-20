@@ -1,6 +1,13 @@
 # Changelog
 
-## 2.0.0 (unreleased)
+## 2.1.0
+
+- Bump NestJS to 11 and `@nestjs/graphql` to 13 across runtime devDeps and the `usage/` sample.
+- Bump `@types/node` to 25, `class-validator` to 0.15, `ts-jest` to 29.4.10.
+- Bump TypeScript to 6 in `usage/`.
+- Peer ranges in the runtime stay at `>=10` / `>=12` so existing consumers are not forced to upgrade.
+
+## 2.0.0
 
 ### Breaking changes
 
