@@ -649,6 +649,11 @@
   resolved "https://registry.yarnpkg.com/@prisma/debug/-/debug-7.8.0.tgz#8e2f70d284b3091c2d713aa093a0f5898487e431"
   integrity sha512-p+QZReysDUqXC+mk17q9a+Y/qzh4c2KYliDK30buYUyfrGeTGSyfmc0AIrJRhZJrLHhRiJa9Au/J72h3C+szvA==
 
+"@prisma/debug@7.9.0":
+  version "7.9.0"
+  resolved "https://registry.yarnpkg.com/@prisma/debug/-/debug-7.9.0.tgz#69560a324bd8d566c1fd111ce9ea1205a7dbae35"
+  integrity sha512-i0KdVQuKUE6N9NloHs+sUNAk2c9svR3myBndQbA3BoeoArsSpwtNgTdHZL+wBtCLCcdS2OOC/PKhgTe36jkF5A==
+
 "@prisma/dev@0.24.3":
   version "0.24.3"
   resolved "https://registry.yarnpkg.com/@prisma/dev/-/dev-0.24.3.tgz#a235c2cfca28134f904e6b964d7652a9dfbd60f4"
@@ -676,6 +681,11 @@
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/@prisma/dmmf/-/dmmf-7.8.0.tgz#5da438d664879d1a37fb87d14b6114b2e879741b"
   integrity sha512-7xzcSFWO6J+dFUgIX7jL7QqUhEDfaa8GSZGsjjHyZct1Su+6KrvMl3S2+fnRkuKUIoTPg3Mj02oZuUdaNSfsaw==
+
+"@prisma/dmmf@7.9.0":
+  version "7.9.0"
+  resolved "https://registry.yarnpkg.com/@prisma/dmmf/-/dmmf-7.9.0.tgz#998178b3607e4d81d3d86c4e634ff8f043a2abf9"
+  integrity sha512-XpS08oSPWAmQFuuvEo6gMXnNCmTHZ4U2uxY9SsxjZ8RUOWJfajVF8wkM9mL2EyWreje9YXNesCbvEYrSLukK6Q==
 
 "@prisma/driver-adapter-utils@7.8.0":
   version "7.8.0"
@@ -708,7 +718,7 @@
     "@prisma/engines-version" "7.8.0-6.3c6e192761c0362d496ed980de936e2f3cebcd3a"
     "@prisma/get-platform" "7.8.0"
 
-"@prisma/generator-helper@7.8.0", "@prisma/generator-helper@^7.8.0":
+"@prisma/generator-helper@7.8.0":
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/@prisma/generator-helper/-/generator-helper-7.8.0.tgz#d7b9b55add40928d2b619535a9e9b74dc1f3000c"
   integrity sha512-i+2Gad6D/0dS0YHKFdYX3M8KYN1gwNkET813WXKfW2HeWmgipmSJsNSzOA44kTM+Rx6Dev3yBQwx5sZXXdtgtQ==
@@ -717,10 +727,24 @@
     "@prisma/dmmf" "7.8.0"
     "@prisma/generator" "7.8.0"
 
+"@prisma/generator-helper@^7.8.0":
+  version "7.9.0"
+  resolved "https://registry.yarnpkg.com/@prisma/generator-helper/-/generator-helper-7.9.0.tgz#aa08a7d383a0c33059541cca270c9066edb0d761"
+  integrity sha512-iFPTZ5AfP3yjV+u4FunwLGGS1O/GcXLHolXSsTEoAtp6y/cLLBxjnJWrOm2GU/op9K28slFOH3xtvRq3CNZMcA==
+  dependencies:
+    "@prisma/debug" "7.9.0"
+    "@prisma/dmmf" "7.9.0"
+    "@prisma/generator" "7.9.0"
+
 "@prisma/generator@7.8.0":
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/@prisma/generator/-/generator-7.8.0.tgz#735dd456fc8bc3a41725aae9754442e82ba4be8a"
   integrity sha512-KHGB0b8/9pNWyiK9EPJNE2/v1bMtqJgJldqjNNVvoE4uOhNSSWTmhHhPVfRsiuOVybzHCdCUQ/gdidCbpYAD5w==
+
+"@prisma/generator@7.9.0":
+  version "7.9.0"
+  resolved "https://registry.yarnpkg.com/@prisma/generator/-/generator-7.9.0.tgz#3f10526052894c0c5bf7edc59de3e84cc26e480f"
+  integrity sha512-CzMNeDwfaRr8tt9eKw29iZ0y0TMWrzHfZ0yvzLTJLIuSoZ9qbkVq1KXA3ELVNdLOU3ch8OFU8Ljie5EsyPpH7g==
 
 "@prisma/get-dmmf@7.8.0":
   version "7.8.0"
